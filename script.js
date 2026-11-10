@@ -1,473 +1,162 @@
 const PH = {
-  1: [
-    "Phase 1 · Foundation",
-    "Decide what  I'm building, and make CI the first thing that runs.",
-  ],
-  2: [
-    "Phase 2 · Build the store",
-    "Catalog, checkout and the merchant's daily work.",
-  ],
-  3: [
-    "Phase 3 · Smart and safe",
-    "The AI assistant, then the production work that makes it trustworthy.",
-  ],
-  4: [
-    "Phase 4 · Launch and sell",
-    "Turn the project into a template and put it in front of a real shop.",
-  ],
-  5: [
-    "Later · Scale and grow",
-    "Unlock after launch, or once a paying customer or budget exists.",
-  ],
+  1: ["Phase 1 · Foundation", "Talk to real businesses, design the data, and make CI the first thing that runs."],
+  2: ["Phase 2 · Build the product", "Requests, scheduling, technicians, quotes and invoices. Tests ship with every feature."],
+  3: ["Phase 3 · Production", "Hardening, deployment, custom domain and a real pilot."],
+  4: ["Phase 4 · Launch and sell", "Turn the project into an offer a business owner can say yes to."],
+  5: ["Later · Scale and grow", "Unlock after launch, or once a paying customer or budget exists."],
 };
 const weeks = [
   {
-    ph: 1,
-    t: "Spec, schema and CI",
-    tag: "Foundation",
-    c: "green",
-    d: "Decide what  I'm building before I build it. CI runs from the very first commit.",
+    ph: 1, t: "Validate, spec, schema and CI", tag: "Foundation", c: "green",
+    d: "Find a real design-partner business before writing features. CI runs from the first commit.",
     tasks: [
-      [
-        "Interview 2 real shop owners (jersey, cloth or eyewear)",
-        3,
-        "Ask how they take orders today, what eats their time, what they'd pay monthly. Their words become MY spec.",
-      ],
-      [
-        "Write a 1-page spec with a cut line",
-        2,
-        "Must-have, should-have, not-now. Define 'sellable' in five bullets.",
-      ],
-      [
-        "Design the schema on paper first",
-        5,
-        "Stores, products, variants (JSONB attributes), inventory, orders, order events. store_id + RLS like MY CRM. Draw the ERD, then let AI review it.",
-      ],
-      [
-        "Scaffold the monorepo and Docker Compose",
-        4,
-        "API, web, Postgres (pgvector image), Redis, MinIO. One command boots everything; env validated with Zod.",
-      ],
-      [
-        "GitHub Actions CI from day one",
-        5,
-        "Lint, typecheck, test, build on every PR with a Postgres service. Protect main and use PRs even solo.",
-      ],
-      [
-        "Seed realistic Bangladeshi demo data",
-        3,
-        "A jersey, a clothing and an eyewear store. BDT prices, Bangla and English names.",
-      ],
-      [
-        "Keep applying + write ADR-001 (why store_id tenancy)",
-        2,
-        "Five applications. One paragraph on the decision and the alternative I rejected.",
-      ],
+      ["Talk to 2-3 repair or home-service businesses", 3, "AC, appliance repair, cleaning. How do requests arrive today (phone, WhatsApp, notebook)? What gets lost? What would they pay monthly? Ask one to be my design partner."],
+      ["Write a 1-page spec with a cut line", 2, "Must-have, should-have, not-now. Define 'sellable' in five bullets."],
+      ["Design the schema on paper first", 5, "Businesses, users + roles, customers, service types, requests, jobs, job events, quotes + lines, invoices, payments, attachments. business_id + RLS like Kin CRM. Draw the ERD first."],
+      ["Scaffold the monorepo and Docker Compose", 4, "Reuse Kin CRM's structure. API, web, Postgres, Redis, MinIO; env validated with Zod."],
+      ["GitHub Actions CI from day one", 5, "Lint, typecheck, test, build on every PR with a Postgres service. Protect main, use PRs even solo."],
+      ["Seed realistic demo data", 3, "An AC repair shop in Dhaka (BDT) and a cleaning company abroad (another currency and time zone). It proves the product isn't Bangladesh-only."],
+      ["Keep applying + write ADR-001 (tenancy)", 2, "Five applications. One paragraph on why business_id + RLS and what I rejected."],
     ],
-    x: "Why a store_id column with RLS instead of a database per shop? When would I change MY mind?",
-    cv: "Designed a multi-tenant commerce schema with PostgreSQL RLS; CI runs __ tests against a Postgres service on every pull request.",
+    x: "Why a business_id column with RLS instead of a database per business? When would I change my mind?",
+    cv: "Designed a multi-tenant service-management schema with PostgreSQL RLS; CI runs __ tests against a Postgres service on every pull request.",
   },
   {
-    ph: 2,
-    t: "Catalog, storefront and caching",
-    tag: "Core build",
-    c: "blue",
-    d: "Merchants add products, customers find them fast. Redis goes in where it earns its place.",
+    ph: 2, t: "Auth, tenants and service requests", tag: "Core build", c: "blue",
+    d: "Customers can ask for a service; the business can't see anyone else's data. Write the tests as each feature lands.",
     tasks: [
-      [
-        "Merchant auth and roles",
-        3,
-        "Reuse the JWT-cookie and role pattern from MY CRM, and re-test it here.",
-      ],
-      [
-        "Product CRUD with variants and per-store attributes",
-        6,
-        "Jersey: size, version, name/number print. Eyewear: frame colour, lens type. Attribute schema lives in store config; Zod on client and server.",
-      ],
-      [
-        "Image upload with presigned URLs",
-        4,
-        "MinIO locally, S3 later, same code. Compress on upload: mobile data in Bangladesh isn't free.",
-      ],
-      [
-        "Storefront: home, category, product page, search",
-        6,
-        "Mobile-first, Bangla + English. Postgres full-text plus pg_trgm for typos. Cursor pagination.",
-      ],
-      [
-        "Seed 10k products, read EXPLAIN, add indexes",
-        3,
-        "Keep before/after query plans. Without volume I learn nothing.",
-      ],
-      [
-        "Redis cache-aside for catalog reads",
-        4,
-        "TTL plus explicit invalidation on product edits. Count hits and misses so I can show it working.",
-      ],
-      [
-        "Open Graph share cards for products",
-        2,
-        "Many shops get traffic from Facebook and Messenger shares, so the preview matters.",
-        1,
-      ],
-      [
-        "Keep applying + ADR on cache invalidation",
-        2,
-        "Record what I cache, for how long, and what stale data costs.",
-      ],
+      ["Auth, roles and permissions", 4, "Owner, technician, customer. Reuse Kin CRM's JWT-cookie pattern and re-test it here."],
+      ["Public business page and service request form", 5, "Service type, description, address, preferred time. Guest request with phone number first; mobile-first; Zod on client and server."],
+      ["Photo upload with presigned URLs", 4, "MinIO locally, S3 later. Validate type and size, compress on upload."],
+      ["Request lifecycle state machine and event log", 5, "new → reviewed → quoted → scheduled → in progress → completed → paid / cancelled. Illegal jumps rejected; every change logged."],
+      ["Cross-tenant isolation tests", 3, "Business A's owner, technician and customer must never read or change business B's data. These run in CI forever."],
+      ["Keep applying + ADR on the request state machine", 2, "List each state, who may move it, and why."],
     ],
-    x: "A merchant changes a price. How does the cached page become correct again, and what might a customer see meanwhile?",
-    cv: "Implemented Redis cache-aside with TTL and event-based invalidation; cut product-list p95 from __ ms to __ ms.",
+    x: "A customer guesses another request's ID in the URL. What stops them, and which test proves it?",
+    cv: "Built role-based service-request workflow with an auditable state machine; __ cross-tenant isolation tests run in CI.",
   },
   {
-    ph: 2,
-    t: "Checkout, orders and first AWS deploy",
-    tag: "Core build",
-    c: "orange",
-    d: "The workflow that must never be wrong, then MY first real deployment.",
+    ph: 2, t: "Dashboard, scheduling and caching", tag: "Core build", c: "orange",
+    d: "The owner's daily screen, and the part recruiters will actually be impressed by: scheduling without double-booking.",
     tasks: [
-      [
-        "Cart with server-side pricing",
-        4,
-        "Client sends product IDs and quantities only. Server computes prices, shipping, total.",
-      ],
-      [
-        "Phone-first guest checkout with COD",
-        4,
-        "Name, phone (01XXXXXXXXX), district, address. No account required; COD is the default.",
-      ],
-      [
-        "Transactional order creation and stock deduction",
-        6,
-        "One transaction, conditional UPDATE or row lock. Test: 20 simultaneous orders for 5 items.",
-      ],
-      [
-        "Idempotency key on order placement",
-        2,
-        "A double tap on slow 4G must not create two orders.",
-      ],
-      [
-        "Order state machine and event log",
-        4,
-        "placed → confirmed → packed → shipped → delivered / cancelled / returned. Illegal jumps rejected; every change logged.",
-      ],
-      [
-        "Create the AWS account, guardrails first",
-        2,
-        "Do this now, not earlier: the free plan clock starts at sign-up. Budget alert, MFA, no daily root use.",
-      ],
-      [
-        "First deploy: EC2 + Docker Compose + Nginx",
-        6,
-        "One small instance running everything. Deploy by hand once so I feel every step; automate in Week 6.",
-      ],
-      [
-        "Keep applying + write a debugging story",
-        2,
-        "The overselling bug I prevented (or caused), as a short STAR story.",
-      ],
+      ["Owner dashboard: request inbox", 5, "Filter by status, date, phone. Request detail, status changes."],
+      ["Technician management and job assignment", 3, "Add technicians, assign a request, see each technician's load."],
+      ["Scheduling without double-booking", 6, "Day and week view. Prevent overlapping jobs per technician in the database (Postgres range type + exclusion constraint), not only in the UI. Test with concurrent requests."],
+      ["Time zones done right", 2, "Store UTC, show in each business's time zone."],
+      ["Seed 10k jobs, read EXPLAIN, add indexes", 3, "Keep before/after query plans."],
+      ["Redis cache-aside for dashboard stats", 4, "TTL plus explicit invalidation on job changes. Count hits and misses so I can show it working."],
+      ["Demo the dashboard to my design-partner business", 2, "Watch them use it. Write down every confusion."],
+      ["Keep applying + ADR on caching", 2, "What I cache, for how long, and what stale data costs."],
     ],
-    x: "Two customers buy the last jersey at the same instant. What does MY database do, and how did I prove it?",
-    cv: "Built transactional checkout with idempotency keys; zero overselling across __ concurrent orders; deployed on AWS EC2 with Docker.",
+    x: "Two requests are booked for the same technician at the same instant. What does my database do, and how did I prove it?",
+    cv: "Prevented technician double-booking with a Postgres exclusion constraint; Redis cache-aside cut dashboard p95 from __ ms to __ ms.",
   },
   {
-    ph: 2,
-    t: "Merchant operations and background jobs",
-    tag: "Core build",
-    c: "green",
-    d: "Make the merchant's day work, and move slow or retryable work off the request path.",
+    ph: 2, t: "Technician app, jobs queue and first AWS deploy", tag: "Core build", c: "green",
+    d: "Field staff update jobs from their phones, customers track progress, slow work moves to a queue, and it goes live on AWS.",
     tasks: [
-      [
-        "Merchant order dashboard",
-        5,
-        "Filter by status, date, phone. Order detail, status changes, printable invoice or packing slip.",
-      ],
-      [
-        "BullMQ queue and worker",
-        4,
-        "Separate container. Learn retries, backoff, failed-job handling, and why jobs must be idempotent.",
-      ],
-      [
-        "Order notifications as jobs",
-        4,
-        "Email first (free tier of a transactional email service). SMS and WhatsApp usually cost money, so hide the channel behind an interface.",
-      ],
-      [
-        "Manual bKash/Nagad payment with TrxID",
-        3,
-        "Customer pays, enters TrxID, merchant verifies. Payments sit behind a provider interface for a real gateway later.",
-      ],
-      [
-        "CSV product import as a background job",
-        4,
-        "Batch inserts, row-level error report, visible progress. Never block an HTTP request.",
-      ],
-      [
-        "Rate limiting and fake-COD signals",
-        3,
-        "Redis limiter on checkout. Flag repeat numbers and many cancellations from one phone.",
-      ],
-      [
-        "Playwright: browse → checkout → merchant fulfils",
-        5,
-        "One real-browser journey in CI, traces kept on failure.",
-      ],
-      [
-        "Courier sandbox booking (Steadfast or Pathao)",
-        4,
-        "Check current API docs and merchant requirements first. Sandbox only, behind an interface.",
-        1,
-      ],
-      [
-        "Keep applying + diagram the async flow",
-        2,
-        "producer → queue → worker → result.",
-      ],
+      ["Technician mobile view", 6, "Today's jobs, status updates, notes, before/after photos. A responsive web page, not a native app."],
+      ["Customer tracking page", 5, "Magic link or login: status timeline, scheduled time, quote and payment status."],
+      ["BullMQ queue and worker", 4, "Separate container. Learn retries, backoff, failed jobs, and why jobs must be idempotent."],
+      ["Email notifications and appointment reminders as jobs", 5, "Request received, scheduled, completed, plus a delayed reminder before the visit. Channel behind an interface so SMS or WhatsApp can be added later."],
+      ["Create the AWS account, guardrails first", 2, "The free-plan clock starts at sign-up, so do it now. Budget alert, MFA, no daily root use."],
+      ["First deploy: EC2 + Docker Compose + Nginx", 6, "Deploy by hand once to feel every step; automate in Week 7."],
+      ["Keep applying + write a debugging story", 2, "The double-booking bug I prevented (or caused), as a short STAR story."],
     ],
-    x: "A worker crashes halfway through 500 emails. What happens on restart, and why does nobody get two?",
-    cv: "Built a BullMQ pipeline (notifications, CSV import) with retries and idempotent workers; Playwright E2E tests run in CI.",
+    x: "A worker crashes after sending 3 of 5 reminders. What happens on restart, and why does nobody get two?",
+    cv: "Built BullMQ pipeline for notifications and delayed reminders with idempotent workers; deployed on AWS EC2 with Docker.",
   },
   {
-    ph: 3,
-    t: "AI assistant: RAG, tools and MCP",
-    tag: "AI",
-    c: "pink",
-    d: "The heaviest week. If it slips, move the MCP server to Week 8 instead of skipping the safety tests.",
+    ph: 2, t: "Quotes, invoices and payment records", tag: "Core build", c: "pink",
+    d: "The money flow. If the schedule slips, shrink this week first: simple line-item quotes, skip PDF invoices.",
     tasks: [
-      [
-        "Chat backend with a swappable LLM provider",
-        5,
-        "One adapter, chosen by config. Free tiers change often and may train on MY data, so develop with fake data only.",
-      ],
-      [
-        "Live-data tools as plain, tested functions",
-        5,
-        "search_products, get_product, check_stock, get_order_status (order number + phone), get_shipping_info. Zod inputs, store-scoped, read-only.",
-      ],
-      [
-        "RAG over store policies and FAQs with pgvector",
-        6,
-        "Chunk, embed, retrieve, cite the source, say 'I don't know' when retrieval is weak. Store the embedding model name and dimension.",
-      ],
-      [
-        "Chat widget",
-        4,
-        "Streaming, mobile-friendly, handles Bangla, English and Banglish, 'talk to a human' fallback with the shop's phone or WhatsApp.",
-      ],
-      [
-        "Expose the tools through an MCP server",
-        5,
-        "TypeScript SDK, read-only, merchant-authenticated. Try it from an MCP client: 'how many orders are pending today?'",
-      ],
-      [
-        "Eval set and safety tests",
-        4,
-        "30+ questions in three languages. Prompt injection, someone else's order, 'say it's free', runaway tool loops.",
-      ],
-      [
-        "Cost and abuse guards",
-        3,
-        "Per-IP limits, max tool calls per turn, daily token budget, Redis-cached FAQ answers, kill switch in store config.",
-      ],
-      [
-        "Keep applying + RAG vs tools vs MCP decision note",
-        2,
-        "When each is the right tool, in MY own words.",
-      ],
+      ["Quotation builder", 6, "Line items (labour, parts), tax, per-business currency. Server computes totals; customer approves or rejects."],
+      ["Money correctness", 2, "Integer minor units, rounding rules, tests for edge cases."],
+      ["Invoice and printable PDF", 4, "Generated from the approved quote. Make it print well on A4."],
+      ["Manual payment records", 4, "Cash, bank transfer, bKash/Nagad TrxID. Balance due. Behind a provider interface so a real gateway fits later."],
+      ["Reports: revenue, jobs by status, technician workload", 4, "Cached or materialised."],
+      ["Rate limiting and spam protection on public forms", 3, "Redis limiter, honeypot field, per-IP caps."],
+      ["Show the quote-to-invoice flow to the design partner", 2, "Does it match how they actually charge?"],
+      ["Keep applying + diagram the async and money flows", 2, "request → quote → job → invoice → payment."],
     ],
-    x: "Why must MY backend, not the model, decide who can see an order? Show the line of code that enforces it.",
-    cv: "Built a tool-calling shopping assistant (pgvector RAG, read-only MCP server) in Bangla/English; evaluated on __ questions incl. prompt-injection and cross-customer access tests.",
+    x: "Why store money as integers, and what happens if a quote is edited after the customer approves it?",
+    cv: "Implemented quote-to-invoice workflow with integer-cent money handling and audit trail; reports cached in Redis.",
   },
   {
-    ph: 3,
-    t: "Hardening, CD and custom domain",
-    tag: "Production",
-    c: "blue",
-    d: "Observable, secure, automatically deployed, on a real domain. A long week.",
+    ph: 3, t: "Hardening, E2E tests and observability", tag: "Production", c: "blue",
+    d: "Observable, secure, tested end to end, and ready for people outside Bangladesh.",
     tasks: [
-      [
-        "Structured logs, request IDs, health and readiness endpoints",
-        4,
-        "pino JSON logs; one ID follows a request through API, DB and worker.",
-      ],
-      [
-        "Security pass against OWASP API Top 10",
-        5,
-        "Store A must never touch store B. Mass assignment, rate limits, cookie and CORS flags, npm audit.",
-      ],
-      [
-        "CD: GitHub Actions → ECR → EC2 with OIDC",
-        5,
-        "Merge to main deploys. Use OIDC role assumption, not long-lived AWS keys.",
-      ],
-      [
-        "Postgres on RDS, then a real restore drill",
-        4,
-        "Compare RDS with a container plus scripted backups. Either way, restore into a fresh instance and time it.",
-      ],
-      [
-        "S3 + CloudFront for images and the frontend",
-        4,
-        "Private bucket, CloudFront origin access, cache headers, least-privilege IAM.",
-      ],
-      [
-        "Custom domain and HTTPS end to end",
-        4,
-        "Registrar → nameservers → DNS records → ACM certificate → CloudFront → HTTPS redirect. Cloudflare DNS is free; domains aren't, so use a cheap one or the client's.",
-      ],
-      [
-        "Load test with k6 and write down the numbers",
-        4,
-        "Product list with cache off and on, then checkout. Find what breaks first.",
-      ],
-      [
-        "Error tracking and CloudWatch alarms",
-        3,
-        "Free-tier Sentry or similar, plus alarms for 5xx, CPU and disk. Break something on purpose and find it from logs.",
-        1,
-      ],
-      [
-        "Keep applying + record a 3-minute walkthrough",
-        2,
-        "Architecture plus live demo. Recruiters do watch these.",
-      ],
+      ["Playwright: request → quote → schedule → complete → paid", 5, "One real-browser journey in CI, traces kept on failure."],
+      ["Structured logs, request IDs, health endpoints", 4, "pino JSON logs; one ID follows a request through API, DB and worker."],
+      ["Security pass against OWASP API Top 10", 5, "Tenant isolation, file upload validation, mass assignment, cookie and CORS flags, npm audit."],
+      ["English + Bangla UI, per-business currency and time zone", 4, "i18n strings, formatted dates and money. This is what makes 'tweak for an international client' a config change."],
+      ["Production Docker images", 3, "Small, non-root, env validated at boot."],
+      ["Load test with k6 and write down the numbers", 4, "Dashboard with cache off and on, then the request form. Find what breaks first."],
+      ["Error tracking and CloudWatch alarms", 3, "Free-tier Sentry plus 5xx, CPU and disk alarms.", 1],
+      ["Keep applying + record a 3-minute walkthrough", 2, "Architecture plus live demo."],
     ],
-    x: "Trace a request from the browser to Postgres and back: DNS, TLS, CloudFront, Nginx, Node, DB. Where can each step fail?",
-    cv: "CI/CD to AWS via GitHub Actions + OIDC; RDS backups with tested restore; CloudFront + ACM HTTPS on a custom domain; load-tested to __ req/s.",
+    x: "Trace a request from the browser to Postgres and back. Where can each step fail?",
+    cv: "Playwright E2E in CI; load-tested to __ req/s; OWASP API Top 10 review including cross-tenant tests.",
   },
   {
-    ph: 4,
-    t: "Template it, pilot it, package it",
-    tag: "Launch",
-    c: "",
-    d: "Turn a project into a product a shop owner can buy.",
+    ph: 3, t: "CD, domain and backups", tag: "Production", c: "orange",
+    d: "Merge to main deploys automatically, on a real domain, with backups I've actually restored.",
     tasks: [
-      [
-        "One store config file for theme and rules",
-        5,
-        "Colours, logo, attribute schema, delivery zones, languages, payment options. Goal: a new store in under a day without touching core code.",
-      ],
-      [
-        "Re-skin for a second shop type",
-        4,
-        "Jersey store to eyewear. Any core-code change I needed is a bug to fix.",
-      ],
-      [
-        "Pilot with one real shop",
-        6,
-        "Import their real products, train them for an hour, watch them use it. Note every confusion.",
-      ],
-      [
-        "Fix the top five pilot issues",
-        5,
-        "Only what blocked or confused them.",
-      ],
-      [
-        "README, architecture diagram, demo video, live link",
-        4,
-        "MY DeepWiki-style README format works. Keep demo data seeded so the live demo is never empty.",
-      ],
-      [
-        "Define the offer",
-        3,
-        "Setup fee, monthly care plan, hosting and LLM costs included. Test the price with the shop owners from Week 1.",
-      ],
-      [
-        "Update CV, portfolio, LinkedIn with real numbers + keep applying",
-        3,
-        "Replace every __ with something I measured.",
-      ],
+      ["CD: GitHub Actions → ECR → EC2 with OIDC", 5, "Merge to main deploys. OIDC role assumption, not long-lived AWS keys."],
+      ["Postgres backups and a real restore drill", 4, "RDS or container plus scripted backups. Restore into a fresh instance and time it."],
+      ["S3 + CloudFront for photos and the frontend", 4, "Private bucket, origin access, cache headers, least-privilege IAM."],
+      ["Custom domain and HTTPS end to end", 4, "Registrar → nameservers → DNS → ACM → CloudFront → HTTPS redirect. Use a cheap domain or the client's."],
+      ["Real-phone test on slow mobile data", 3, "Technician view and request form on a mid-range Android, throttled network."],
+      ["Keep applying + ADR on the deploy pipeline", 2, "What triggers a deploy, how I roll back."],
     ],
-    x: "Pitch this to a shop owner in 60 seconds, then to an engineering manager in 60 seconds. What changes?",
-    cv: "Built and launched a multi-store e-commerce platform for Bangladeshi online shops; onboarded a store in __ hours (live link).",
+    x: "A bad deploy goes out at 2am. How do I know, and how do I roll back?",
+    cv: "CI/CD to AWS via GitHub Actions + OIDC; Postgres backups with tested restore in __ min; CloudFront + ACM HTTPS on a custom domain.",
   },
   {
-    ph: 5,
-    later: 1,
-    t: "SPOF-proof the architecture",
-    tag: "Scale",
-    c: "blue",
+    ph: 4, t: "Template it, pilot it, sell it", tag: "Launch", c: "",
+    d: "Turn a project into a product a business owner can buy, and write down what I'd charge.",
+    tasks: [
+      ["One business config for branding and rules", 5, "Logo, colours, service types, currency, time zone, language, notification channel. Goal: a new business in under a day without touching core code."],
+      ["Re-skin for a second business type", 4, "AC repair to cleaning. Any core-code change I needed is a bug to fix."],
+      ["Pilot with one real business", 6, "Import their real services and customers, train them for an hour, watch them use it."],
+      ["Fix the top five pilot issues", 5, "Only what blocked or confused them."],
+      ["README, architecture diagram, demo video, live link", 4, "Keep demo data seeded so the live demo is never empty."],
+      ["Define the offer and where to find buyers", 3, "Setup fee, monthly care plan, hosting included. Go direct with a demo first; use Upwork, Freelancer and LinkedIn as a second channel."],
+      ["Update CV, portfolio, LinkedIn with real numbers + keep applying", 3, "Replace every __ with something I measured. Ask the pilot for a testimonial."],
+    ],
+    x: "Pitch this to a repair-shop owner in 60 seconds, then to an engineering manager in 60 seconds. What changes?",
+    cv: "Built and launched a multi-tenant service-management platform; onboarded a business in __ hours (live link, pilot client).",
+  },
+  {
+    ph: 5, later: 1, t: "SPOF-proof the architecture", tag: "Scale", c: "blue",
     d: "Do this when a customer pays or budget exists. Labs run for a day, then get torn down: load balancers bill by the hour.",
     tasks: [
-      [
-        "Map every single point of failure",
-        2,
-        "One instance, one DB, one AZ, one DNS provider, one Redis. Rank by likelihood and impact.",
-      ],
-      [
-        "Lab: load balancer + two app instances in two AZs",
-        5,
-        "Health checks, kill one instance, watch traffic continue. Tear down the same day.",
-      ],
-      [
-        "Lab: RDS Multi-AZ failover",
-        3,
-        "Trigger a failover, measure downtime, compare cost with a snapshot restore.",
-      ],
-      [
-        "Infrastructure as Code (Terraform or CDK)",
-        6,
-        "Rebuild everything from code, destroy it, rebuild. Proof I can recover.",
-      ],
-      [
-        "Zero-downtime deploys (rolling or blue/green)",
-        4,
-        "Deploy during a k6 run and watch for errors.",
-      ],
-      [
-        "Disaster recovery runbook with real RTO/RPO",
-        3,
-        "Restore into a fresh environment, time it, write the steps.",
-      ],
-      [
-        "Containers on ECS Fargate",
-        6,
-        "Task definitions, services, autoscaling. Know what I gain over hand-managed EC2.",
-        1,
-      ],
+      ["Map every single point of failure", 2, "One instance, one DB, one AZ, one DNS provider, one Redis. Rank by likelihood and impact."],
+      ["Lab: load balancer + two app instances in two AZs", 5, "Kill one instance, watch traffic continue. Tear down the same day."],
+      ["Lab: RDS Multi-AZ failover", 3, "Trigger a failover, measure downtime, compare cost with a snapshot restore."],
+      ["Infrastructure as Code (Terraform or CDK)", 6, "Rebuild everything from code, destroy it, rebuild."],
+      ["Zero-downtime deploys", 4, "Deploy during a k6 run and watch for errors."],
+      ["Disaster recovery runbook with real RTO/RPO", 3, "Restore into a fresh environment, time it, write the steps."],
+      ["Containers on ECS Fargate", 6, "Task definitions, services, autoscaling.", 1],
     ],
-    x: "If the instance, the database or a whole AZ dies tonight, what happens to a customer mid-checkout?",
+    x: "If the instance, the database or a whole AZ dies tonight, what happens to a technician mid-job?",
     cv: "Rebuilt production with Terraform; Multi-AZ failover tested at __ s downtime; documented RTO __ / RPO __.",
   },
   {
-    ph: 5,
-    later: 1,
-    t: "Payments, couriers, onboarding",
-    tag: "Grow",
-    c: "orange",
-    d: "What turns one pilot into a business.",
+    ph: 5, later: 1, t: "Payments, messaging, AI and growth", tag: "Grow", c: "orange",
+    d: "What turns one pilot into a business. AI is deliberately here, not in v1.",
     tasks: [
-      [
-        "Real payment gateway in sandbox",
-        8,
-        "SSLCOMMERZ or bKash. Check merchant eligibility, fees and sandbox access first. Signed webhooks, idempotent handlers.",
-      ],
-      [
-        "Courier integration with status sync",
-        6,
-        "Book parcels, pull delivery status on a schedule.",
-      ],
-      [
-        "Self-serve store onboarding",
-        8,
-        "Merchant signs up, picks a theme, adds products, maps a domain.",
-      ],
-      [
-        "Merchant analytics",
-        5,
-        "Daily sales, top products, repeat buyers; cached or materialised.",
-      ],
-      [
-        "Chatbot v2: drafts actions, merchant approves",
-        5,
-        "The bot drafts a cancel or refund request; a human confirms. Never autonomous.",
-      ],
+      ["Real payment gateway in sandbox", 8, "Stripe for international, SSLCOMMERZ or bKash for Bangladesh. Signed webhooks, idempotent handlers."],
+      ["SMS or WhatsApp reminders", 5, "Check provider pricing and rules first; plug into the notification interface."],
+      ["Self-serve business onboarding", 8, "Sign up, pick a theme, add services, map a domain."],
+      ["AI request triage assistant", 6, "Reads the customer's description, suggests a service type and urgency; the owner confirms. A place to learn RAG and MCP properly."],
+      ["Technician PWA with offline notes", 5, "Installable, works on weak signal.", 1],
     ],
-    x: "Which webhook can arrive twice or out of order, and what stops it from corrupting an order?",
-    cv: "Integrated a payment gateway with signed, idempotent webhooks; self-serve onboarding cut store setup to __ minutes.",
+    x: "Which webhook can arrive twice or out of order, and what stops it from corrupting a payment record?",
+    cv: "Integrated a payment gateway with signed, idempotent webhooks; self-serve onboarding cut setup to __ minutes.",
   },
 ];
-const STORAGE_KEY = "build-mode-roadmap-v2";
+const STORAGE_KEY = "build-mode-roadmap-v3";
 let state = loadState();
 function loadState() {
   try {
@@ -558,7 +247,7 @@ function renderWeeks() {
     const hrs = core(wi).reduce((n, [t]) => n + t[1], 0);
     const sib = weeks.filter((x) => x.ph === w.ph),
       wide = sib.length % 2 === 1 && sib[sib.length - 1] === w;
-    out += `<article class="week-card${w.later ? " later" : ""}${wide ? " wide" : ""}" data-week="${wi}"><div class="week-top"><div><div class="week-num">WEEK ${String(wi + 1).padStart(2, "0")}${wi === h ? '<span class="here">I are here</span>' : ""}</div><h3>${w.t}</h3></div><span class="pill ${w.c}">${w.tag}</span></div><p class="desc">${w.d}</p><div class="mini-track"><span></span></div><div class="task-list">${tasks}</div><details class="proof"><summary>Explain-back and CV line</summary><p><b>Be able to answer:</b> ${w.x}</p><p><b>CV line  I'm earning:</b> ${w.cv}</p></details><div class="week-footer"><span class="week-progress"></span><span>~${hrs} h core</span></div></article>`;
+    out += `<article class="week-card${w.later ? " later" : ""}${wide ? " wide" : ""}" data-week="${wi}"><div class="week-top"><div><div class="week-num">WEEK ${String(wi + 1).padStart(2, "0")}${wi === h ? '<span class="here">I are here</span>' : ""}</div><h3>${w.t}</h3></div><span class="pill ${w.c}">${w.tag}</span></div><p class="desc">${w.d}</p><div class="mini-track"><span></span></div><div class="task-list">${tasks}</div><details class="proof"><summary>Explain-back and CV line</summary><p><b>Be able to answer:</b> ${w.x}</p><p><b>CV line I'm earning:</b> ${w.cv}</p></details><div class="week-footer"><span class="week-progress"></span><span>~${hrs} h core</span></div></article>`;
   });
   document.getElementById("weekGrid").innerHTML = out;
   updateProgress();
@@ -650,7 +339,7 @@ document.getElementById("importFile").onchange = async (e) => {
 document.getElementById("resetBtn").onclick = () => {
   if (
     confirm(
-      "Reset all completed tasks and notes on this browser? Export MY progress first if I want a backup.",
+      "Reset all completed tasks and notes on this browser? Export my progress first if I want a backup.",
     )
   ) {
     state = { done: {}, notes: {} };
@@ -661,43 +350,22 @@ document.getElementById("resetBtn").onclick = () => {
 renderWeeks();
 
 const vids = [
-  [
-    "CI/CD with GitHub Actions",
-    "github actions node.js postgres ci cd tutorial",
-  ],
-  [
-    "Docker Compose: Node, Postgres, Redis",
-    "docker compose node postgres redis tutorial",
-  ],
+  ["CI/CD with GitHub Actions", "github actions node.js postgres ci cd tutorial"],
+  ["Docker Compose: Node, Postgres, Redis", "docker compose node postgres redis tutorial"],
+  ["Prevent double booking in PostgreSQL", "postgresql exclusion constraint prevent double booking"],
+  ["Time zones in Postgres and JavaScript", "postgresql timestamptz time zones best practices"],
+  ["State machines in TypeScript", "typescript state machine order workflow tutorial"],
   ["Redis cache-aside in Node", "redis cache aside node.js tutorial"],
+  ["PostgreSQL EXPLAIN and indexes", "postgresql explain analyze indexes tutorial"],
+  ["BullMQ background and delayed jobs", "bullmq node.js delayed jobs queue tutorial"],
+  ["Generate PDF invoices in Node", "node.js generate pdf invoice tutorial"],
+  ["React i18n with i18next", "react i18next tutorial"],
   ["AWS EC2 + IAM, deploy a Docker app", "aws ec2 iam deploy docker compose"],
-  [
-    "AWS VPC, subnets, security groups",
-    "aws vpc explained subnets security groups",
-  ],
-  [
-    "CloudFront + S3 + ACM + custom domain",
-    "aws cloudfront s3 acm custom domain https",
-  ],
-  [
-    "PostgreSQL EXPLAIN and indexes",
-    "postgresql explain analyze indexes tutorial",
-  ],
-  ["BullMQ background jobs", "bullmq node.js queue tutorial"],
-  ["Build an MCP server in TypeScript", "build mcp server typescript tutorial"],
-  ["RAG with Postgres + pgvector", "rag pgvector postgres tutorial"],
-  ["LLM tool calling and evals", "llm function calling evals tutorial"],
-  ["k6 load testing", "k6 load testing tutorial"],
+  ["CloudFront + S3 + ACM + custom domain", "aws cloudfront s3 acm custom domain https"],
   ["Playwright end-to-end tests", "playwright e2e testing tutorial"],
+  ["k6 load testing", "k6 load testing tutorial"],
   ["Terraform on AWS", "terraform aws beginner tutorial"],
-  [
-    "System design: e-commerce checkout",
-    "system design e-commerce checkout inventory",
-  ],
-  [
-    "Multi-AZ, load balancers, failover",
-    "aws high availability multi az load balancer",
-  ],
+  ["Multi-AZ, load balancers, failover", "aws high availability multi az load balancer"],
 ];
 const docs = [
   ["AWS Free Tier", "Check eligibility", "https://aws.amazon.com/free/"],
@@ -712,7 +380,7 @@ const docs = [
   ["BullMQ", "Queues", "https://docs.bullmq.io/"],
   ["PostgreSQL docs", "Database", "https://www.postgresql.org/docs/"],
   ["Drizzle ORM", "ORM", "https://orm.drizzle.team/docs/overview"],
-  ["pgvector", "Vector search", "https://github.com/pgvector/pgvector"],
+  ["pgvector (later: AI)", "Vector search", "https://github.com/pgvector/pgvector"],
   [
     "MCP introduction",
     "AI tools",
@@ -737,7 +405,9 @@ const docs = [
   ],
   ["Docker 101", "Containers", "https://www.docker.com/101-tutorial/"],
   ["System Design Roadmap", "Architecture", "https://roadmap.sh/system-design"],
-  ["Ollama", "Local LLMs", "https://ollama.com/"],
+  ["Postgres range types", "Scheduling", "https://www.postgresql.org/docs/current/rangetypes.html"],
+  ["Nodemailer", "Email", "https://nodemailer.com/"],
+  ["i18next", "Translations", "https://www.i18next.com/"],
 ];
 document.getElementById("vidList").innerHTML = vids
   .map(
