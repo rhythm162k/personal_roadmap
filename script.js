@@ -31,7 +31,7 @@ const weeks = [
       [
         "Interview 2 real shop owners (jersey, cloth or eyewear)",
         3,
-        "Ask how they take orders today, what eats their time, what they'd pay monthly. Their words become your spec.",
+        "Ask how they take orders today, what eats their time, what they'd pay monthly. Their words become MY spec.",
       ],
       [
         "Write a 1-page spec with a cut line",
@@ -41,7 +41,7 @@ const weeks = [
       [
         "Design the schema on paper first",
         5,
-        "Stores, products, variants (JSONB attributes), inventory, orders, order events. store_id + RLS like your CRM. Draw the ERD, then let AI review it.",
+        "Stores, products, variants (JSONB attributes), inventory, orders, order events. store_id + RLS like MY CRM. Draw the ERD, then let AI review it.",
       ],
       [
         "Scaffold the monorepo and Docker Compose",
@@ -64,7 +64,7 @@ const weeks = [
         "Five applications. One paragraph on the decision and the alternative you rejected.",
       ],
     ],
-    x: "Why a store_id column with RLS instead of a database per shop? When would you change your mind?",
+    x: "Why a store_id column with RLS instead of a database per shop? When would you change MY mind?",
     cv: "Designed a multi-tenant commerce schema with PostgreSQL RLS; CI runs __ tests against a Postgres service on every pull request.",
   },
   {
@@ -77,7 +77,7 @@ const weeks = [
       [
         "Merchant auth and roles",
         3,
-        "Reuse the JWT-cookie and role pattern from your CRM, and re-test it here.",
+        "Reuse the JWT-cookie and role pattern from MY CRM, and re-test it here.",
       ],
       [
         "Product CRUD with variants and per-store attributes",
@@ -124,7 +124,7 @@ const weeks = [
     t: "Checkout, orders and first AWS deploy",
     tag: "Core build",
     c: "orange",
-    d: "The workflow that must never be wrong, then your first real deployment.",
+    d: "The workflow that must never be wrong, then MY first real deployment.",
     tasks: [
       [
         "Cart with server-side pricing",
@@ -167,7 +167,7 @@ const weeks = [
         "The overselling bug you prevented (or caused), as a short STAR story.",
       ],
     ],
-    x: "Two customers buy the last jersey at the same instant. What does your database do, and how did you prove it?",
+    x: "Two customers buy the last jersey at the same instant. What does MY database do, and how did you prove it?",
     cv: "Built transactional checkout with idempotency keys; zero overselling across __ concurrent orders; deployed on AWS EC2 with Docker.",
   },
   {
@@ -237,7 +237,7 @@ const weeks = [
       [
         "Chat backend with a swappable LLM provider",
         5,
-        "One adapter, chosen by config. Free tiers change often and may train on your data, so develop with fake data only.",
+        "One adapter, chosen by config. Free tiers change often and may train on MY data, so develop with fake data only.",
       ],
       [
         "Live-data tools as plain, tested functions",
@@ -272,10 +272,10 @@ const weeks = [
       [
         "Keep applying + RAG vs tools vs MCP decision note",
         2,
-        "When each is the right tool, in your own words.",
+        "When each is the right tool, in MY own words.",
       ],
     ],
-    x: "Why must your backend, not the model, decide who can see an order? Show the line of code that enforces it.",
+    x: "Why must MY backend, not the model, decide who can see an order? Show the line of code that enforces it.",
     cv: "Built a tool-calling shopping assistant (pgvector RAG, read-only MCP server) in Bangla/English; evaluated on __ questions incl. prompt-injection and cross-customer access tests.",
   },
   {
@@ -365,7 +365,7 @@ const weeks = [
       [
         "README, architecture diagram, demo video, live link",
         4,
-        "Your DeepWiki-style README format works. Keep demo data seeded so the live demo is never empty.",
+        "MY DeepWiki-style README format works. Keep demo data seeded so the live demo is never empty.",
       ],
       [
         "Define the offer",
@@ -650,7 +650,7 @@ document.getElementById("importFile").onchange = async (e) => {
 document.getElementById("resetBtn").onclick = () => {
   if (
     confirm(
-      "Reset all completed tasks and notes on this browser? Export your progress first if you want a backup.",
+      "Reset all completed tasks and notes on this browser? Export MY progress first if you want a backup.",
     )
   ) {
     state = { done: {}, notes: {} };
