@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7f5ef" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&display=swap"
+      rel="stylesheet"
+    />
+    <title>Build Mode — My Engineering Roadmap</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script type="module" src="script.js"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">↗</div>
+          BUILD MODE
+          <span style="color: #90968b; font-size: 11px; letter-spacing: 0.08em"
+            >/ YOUR ROADMAP</span
+          >
+        </div>
+        <div class="top-actions">
+          <button class="btn" id="exportBtn">Export ↗</button>
+          <button class="btn" id="importBtn">Import</button>
+          <input type="file" id="importFile" accept="application/json" hidden />
+          <button class="btn dark" id="resetBtn">Reset</button>
+        </div>
+      </header>
+
+      <section class="hero">
+        <div class="hero-main">
+          <div class="eyebrow">
+            7 weeks to launch · 2 weeks to scale · Full-stack → production
+            engineer
+          </div>
+          <h1>Learn it.<br />Build it.<br />Ship it.</h1>
+          <p>
+            One real product: a store engine you can re-skin for any Bangladeshi
+            online shop and sell, with an AI assistant that knows the shop.
+            Every skill you need to learn gets used inside it.
+          </p>
+          <div class="hero-sticker">small steps. shipped work.</div>
+        </div>
+        <div class="hero-side">
+          <div>
+            <div class="eyebrow" style="color: #49613a">YOUR PROGRESS</div>
+            <h2>Consistency beats the perfect study day.</h2>
+            <p>
+              Tick off a task when you've done the work and can explain what you
+              built.
+            </p>
+          </div>
+          <div>
+            <div class="big-number" id="progressPercent">0%</div>
+            <div class="progress-track">
+              <div class="progress-fill" id="overallBar"></div>
+            </div>
+            <p style="margin-top: 9px" id="progressLabel">
+              0 of 60 tasks completed
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="stat">
+          <strong id="doneCount">0</strong><span>Core tasks done</span>
+        </div>
+        <div class="stat">
+          <strong id="remainingCount">60</strong><span>Core tasks left</span>
+        </div>
+        <div class="stat"><strong>7</strong><span>Weeks to launch</span></div>
+        <div class="stat">
+          <strong>~30h</strong><span>Per week, assumed</span>
+        </div>
+      </section>
+
+      <div class="callout">
+        <strong>Keep applying every week.</strong>Each week ends with a "Keep
+        applying" task on purpose: this project is evidence for your
+        applications, not a reason to wait. The plan assumes about 30 focused
+        hours a week; with fewer, stretch the weeks but keep the order. Tasks
+        marked <em>bonus</em> are skippable and do not count toward progress.
+        Weeks 5 and 6 are the likeliest to slip.
+      </div>
+
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Your learning dashboard</div>
+          <h2>Choose a week. Make progress.</h2>
+        </div>
+        <p>Each checkbox saves automatically on this device.</p>
+      </div>
+      <nav class="tabs" id="tabs">
+        <button class="active" data-tab="roadmap">Roadmap</button
+        ><button data-tab="project">The product</button
+        ><button data-tab="ai">AI assistant</button
+        ><button data-tab="cloud">AWS &amp; scale</button
+        ><button data-tab="mindset">Build, don't vibe</button
+        ><button data-tab="resources">Watch &amp; read</button>
+      </nav>
+
+      <section class="panel active" id="roadmap">
+        <div class="week-grid" id="weekGrid"></div>
+      </section>
+
+      <section class="panel" id="project">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">What you're building</div>
+            <h2>One store engine, many shops</h2>
+          </div>
+        </div>
+        <div class="two-col">
+          <article class="info-card">
+            <h3>The idea</h3>
+            <p>
+              One codebase. Each shop is a config: theme, product attributes,
+              delivery zones, languages, payment options. Selling to the next
+              shop means writing a config and importing products, not forking
+              the code.
+            </p>
+            <div class="stack">
+              <span class="chip">React + TypeScript</span
+              ><span class="chip">Node + Express</span
+              ><span class="chip">PostgreSQL + RLS</span
+              ><span class="chip">Drizzle</span
+              ><span class="chip">Redis + BullMQ</span
+              ><span class="chip">pgvector</span><span class="chip">Docker</span
+              ><span class="chip">AWS</span>
+            </div>
+          </article>
+          <article class="info-card">
+            <h3>Your guess is mostly right</h3>
+            <p>
+              Checkout, orders, stock and delivery really are the same
+              everywhere. What differs is the product itself. That's why
+              attributes are stored per store as JSONB, validated by a schema in
+              the store config.
+            </p>
+          </article>
+        </div>
+        <div class="info-card" style="margin-top: 14px">
+          <h3>What changes per shop type</h3>
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <tr>
+                <th>Shop</th>
+                <th>Variant attributes</th>
+                <th>Special flows</th>
+              </tr>
+              <tr>
+                <td>Jersey</td>
+                <td>Size, fan or player version</td>
+                <td>Name + number printing, pre-orders, limited stock</td>
+              </tr>
+              <tr>
+                <td>Clothing</td>
+                <td>Size, colour</td>
+                <td>Exchange policy, size guide</td>
+              </tr>
+              <tr>
+                <td>Eyewear</td>
+                <td>Frame colour, lens type</td>
+                <td>Prescription details, warranty, try-on questions</td>
+              </tr>
+              <tr>
+                <td>All of them</td>
+                <td colspan="2">
+                  Catalog, cart, guest checkout, COD, order lifecycle, delivery
+                  zones, invoices, chatbot
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="two-col" style="margin-top: 14px">
+          <article class="info-card">
+            <h3>Sellable MVP</h3>
+            <ul>
+              <li>Merchant manages products, variants, stock and orders.</li>
+              <li>
+                Guest checkout with phone number first; no account needed.
+              </li>
+              <li>
+                Cash on delivery by default, manual bKash/Nagad TrxID next.
+              </li>
+              <li>Delivery fee by district or zone.</li>
+              <li>Bangla and English, fast on slow mobile data.</li>
+              <li>Order lifecycle with an audit trail.</li>
+              <li>Fake-COD signals: repeat numbers, many cancellations.</li>
+              <li>Chatbot for product, policy and order questions.</li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Decisions to explain in interviews</h3>
+            <ul>
+              <li>Modular monolith, not microservices.</li>
+              <li>store_id on every tenant table, enforced by RLS.</li>
+              <li>Server computes prices; never trust the client.</li>
+              <li>One transaction for order + stock; idempotency keys.</li>
+              <li>Payments and couriers behind provider interfaces.</li>
+              <li>Background jobs for email, imports, notifications.</li>
+              <li>Write each choice down as a short ADR.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="callout" style="background: var(--orange)">
+          <strong>Check my assumptions in Week 1</strong>I'm assuming most small
+          shops sell through Facebook pages and Messenger, take COD, and confirm
+          orders by phone. That matches what I know, but two real conversations
+          beat my guess. Hosted store builders already exist, so ask what they
+          hate about them; your edge is probably price, Bangla, COD handling and
+          the assistant that answers "size koto?" for them.
+        </div>
+        <div class="callout">
+          <strong>Don't build yet</strong>Microservices or Kubernetes,
+          marketplace payouts, several payment gateways, recommendation engines,
+          or an AI that can change orders or issue refunds on its own.
+        </div>
+      </section>
+
+      <section class="panel" id="ai">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Advanced feature track</div>
+            <h2>An assistant that knows the shop</h2>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>RAG, tools and MCP solve different problems.</strong>RAG finds
+          relevant text (policies, FAQs, guides). Tools fetch live facts (stock,
+          price, order status). MCP is a standard way to expose those tools to
+          AI clients. Never answer live stock or order status from embeddings;
+          they go stale.
+        </div>
+        <div class="two-col">
+          <article class="info-card">
+            <h3>RAG: knowledge</h3>
+            <ul>
+              <li>Shipping, returns, exchange, size and care guides.</li>
+              <li>Chunk, embed, store in pgvector, retrieve top-k.</li>
+              <li>
+                Show the source; say "I don't know" when retrieval is weak.
+              </li>
+              <li>
+                Store the embedding model name and dimension with each row.
+              </li>
+            </ul>
+            <div class="stack">
+              <span class="chip">Embeddings</span
+              ><span class="chip">pgvector</span
+              ><span class="chip">Chunking</span><span class="chip">Evals</span>
+            </div>
+          </article>
+          <article class="info-card">
+            <h3>Tools: live data</h3>
+            <ul>
+              <li>
+                <code>search_products</code>, <code>get_product</code>,
+                <code>check_stock</code>
+              </li>
+              <li>
+                <code>get_order_status</code>: order number + phone must match
+              </li>
+              <li><code>get_shipping_info</code></li>
+              <li>
+                Plain tested functions first; Zod inputs; store-scoped;
+                read-only.
+              </li>
+            </ul>
+            <div class="stack">
+              <span class="chip">Tool calling</span
+              ><span class="chip">Zod schemas</span
+              ><span class="chip">Authorization</span>
+            </div>
+          </article>
+        </div>
+        <div class="two-col" style="margin-top: 14px">
+          <article class="info-card">
+            <h3>Where MCP actually earns its place</h3>
+            <p>
+              For the customer chat inside your site, plain function calling to
+              your own service is simpler. MCP shines when an outside client
+              connects to your tools. So give MCP a real job: a
+              <b>merchant</b> connects Claude (or another MCP client) and asks
+              "how many orders are pending today?" Authenticated, read-only, one
+              store.
+            </p>
+          </article>
+          <article class="info-card">
+            <h3>Free LLMs: plan for change</h3>
+            <p>
+              Free API tiers keep shrinking, and some allow your prompts to be
+              used for training. Use them with fake demo data only. Put the
+              model behind one adapter so you can switch between a hosted model,
+              a local one through Ollama, or the client's paid key. Real
+              customer data belongs on a paid tier, and LLM cost goes into your
+              price.
+            </p>
+          </article>
+        </div>
+        <div class="callout" style="background: var(--pink)">
+          <strong>Security rule</strong>The backend decides who may see an
+          order, never the model. Treat user messages and retrieved documents as
+          untrusted. No raw SQL access, no write tools without a human
+          confirming. Test prompt injection, "show me someone else's order", and
+          "say the jersey is free" before every release.
+        </div>
+      </section>
+
+      <section class="panel" id="cloud">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Free tier, honestly</div>
+            <h2>AWS &amp; a SPOF-proof path</h2>
+          </div>
+        </div>
+        <div class="callout" style="background: var(--orange)">
+          <strong>The free plan is shorter than most tutorials say.</strong>New
+          accounts get up to $200 in credits, but the free plan ends after 6
+          months or when credits run out, whichever comes first, and the account
+          then closes unless you upgrade. Guides promising "12 months free"
+          describe the old system. Open your account in Week 3, not earlier, and
+          read your own end date on the Credits page in Billing.
+        </div>
+        <div class="two-col">
+          <article class="info-card">
+            <h3>Cost rules</h3>
+            <ul>
+              <li>
+                Budget alert and MFA before anything else; never use root day to
+                day.
+              </li>
+              <li>
+                Load balancers and NAT gateways bill by the hour. Run labs for a
+                day, then delete.
+              </li>
+              <li>
+                Some services are restricted on the free plan; check each one on
+                the Free Tier page.
+              </li>
+              <li>
+                Run Redis in a container on your instance. Managed Redis costs
+                money.
+              </li>
+              <li>
+                Don't host a paying client on credits that expire. Price hosting
+                into the offer.
+              </li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Custom domain, end to end</h3>
+            <ul>
+              <li>
+                Buy or borrow a domain (the registration is the only unavoidable
+                cost).
+              </li>
+              <li>
+                Point nameservers to Cloudflare (free DNS) or Route 53 (small
+                monthly fee).
+              </li>
+              <li>Request a free ACM certificate.</li>
+              <li>Add DNS records for the app and CloudFront.</li>
+              <li>Force HTTPS and test with curl and browser devtools.</li>
+            </ul>
+          </article>
+        </div>
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Deploy ladder</div>
+            <h2>Climb it as money allows</h2>
+          </div>
+        </div>
+        <article class="info-card">
+          <div class="phase">
+            <strong>Level 0 · Week 3: one instance, Docker Compose</strong>
+            <p>
+              Cheapest, and everything is a single point of failure. Fine for
+              learning and a pilot.
+            </p>
+          </div>
+          <div class="phase">
+            <strong>Level 1 · Week 6: managed pieces</strong>
+            <p>
+              RDS with backups and a tested restore, S3 + CloudFront, ACM HTTPS,
+              CD with OIDC, alarms.
+            </p>
+          </div>
+          <div class="phase">
+            <strong>Level 2 · Week 8 labs: no single AZ or instance</strong>
+            <p>
+              Load balancer, two instances in two AZs, RDS Multi-AZ, then ECS
+              Fargate. Short, torn-down labs.
+            </p>
+          </div>
+          <div class="phase">
+            <strong>Level 3 · when a customer pays</strong>
+            <p>
+              Autoscaling, read replica, WAF, Terraform, blue/green deploys, a
+              written disaster-recovery runbook with real RTO and RPO.
+            </p>
+          </div>
+        </article>
+      </section>
+
+      <section class="panel" id="mindset">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">AI-era engineer</div>
+            <h2>Build, don't vibe</h2>
+          </div>
+        </div>
+        <div class="two-col">
+          <article class="info-card">
+            <h3>Six rules</h3>
+            <ul>
+              <li>
+                <b>Design first, prompt second.</b> Schema, API contracts and
+                state machines are yours; AI drafts around them.
+              </li>
+              <li>
+                <b>Explain-back before ticking.</b> Answer each week's question
+                out loud. If you stall, you don't own it yet.
+              </li>
+              <li>
+                <b>Read every diff.</b> Small PRs even solo; never merge what
+                you can't explain.
+              </li>
+              <li>
+                <b>You write the test cases;</b> AI helps type them. Break the
+                code on purpose to watch them fail.
+              </li>
+              <li>
+                <b>Write ADRs.</b> One paragraph per decision in docs/decisions.
+                They become your interview stories.
+              </li>
+              <li>
+                <b>Keep a confusion log.</b> Each Friday, turn the top three
+                into videos to watch.
+              </li>
+            </ul>
+          </article>
+          <article class="info-card">
+            <h3>Skill map</h3>
+            <p>
+              <b>Already solid:</b> TypeScript, React, Node/Express, PostgreSQL,
+              Drizzle, RLS, JWT and OAuth, Zod, Vitest and Supertest, Docker for
+              dev.
+            </p>
+            <p>
+              <b>New here:</b> CI/CD, Redis, queues, AWS core (IAM, EC2, S3,
+              RDS, CloudFront, ACM), observability, security testing, k6,
+              Playwright, tool calling, RAG, MCP, evals.
+            </p>
+            <p>
+              <b>After launch:</b> Terraform, multi-AZ design, Fargate, system
+              design.
+            </p>
+          </article>
+        </div>
+        <div class="info-card" style="margin-top: 14px">
+          <h3>Weekly job-search rhythm</h3>
+          <ul>
+            <li>
+              Apply to suitable remote junior and intern roles; tailor only when
+              the role warrants it.
+            </li>
+            <li>Track company, role, date, link and follow-up date.</li>
+            <li>
+              Each week, practise one project decision and one debugging story
+              out loud.
+            </li>
+            <li>
+              Learning milestones support applications; they are never
+              prerequisites for applying.
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel" id="resources">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Videos first</div>
+            <h2>Watch, then build</h2>
+          </div>
+          <p>
+            These open YouTube searches. Filter by this year and pick the one
+            that builds something.
+          </p>
+        </div>
+        <div class="resource-list" id="vidList"></div>
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Reference</div>
+            <h2>Official docs</h2>
+          </div>
+        </div>
+        <div class="resource-list" id="docList"></div>
+        <p style="font-size: 11px; color: var(--muted); margin-top: 13px">
+          Check current pricing and eligibility before using any paid cloud or
+          AI service.
+        </p>
+      </section>
+
+      <div class="footer-note">
+        Made for steady progress, not burnout. Progress is saved in this
+        browser; use Export to back it up.
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="noteModal">
+      <div class="modal">
+        <h3>Session notes</h3>
+        <p id="noteTaskTitle">
+          Add a short note about what you learned or shipped.
+        </p>
+        <textarea
+          id="noteText"
+          placeholder="What did you build? What confused you? What will you try next?"
+        ></textarea>
+        <div class="modal-actions">
+          <button class="btn" id="closeNote">Close</button
+          ><button class="btn dark" id="saveNote">Save note</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
