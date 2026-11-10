@@ -1,7 +1,7 @@
 const PH = {
   1: [
     "Phase 1 · Foundation",
-    "Decide what you're building, and make CI the first thing that runs.",
+    "Decide what  I'm building, and make CI the first thing that runs.",
   ],
   2: [
     "Phase 2 · Build the store",
@@ -26,7 +26,7 @@ const weeks = [
     t: "Spec, schema and CI",
     tag: "Foundation",
     c: "green",
-    d: "Decide what you're building before you build it. CI runs from the very first commit.",
+    d: "Decide what  I'm building before I build it. CI runs from the very first commit.",
     tasks: [
       [
         "Interview 2 real shop owners (jersey, cloth or eyewear)",
@@ -61,10 +61,10 @@ const weeks = [
       [
         "Keep applying + write ADR-001 (why store_id tenancy)",
         2,
-        "Five applications. One paragraph on the decision and the alternative you rejected.",
+        "Five applications. One paragraph on the decision and the alternative I rejected.",
       ],
     ],
-    x: "Why a store_id column with RLS instead of a database per shop? When would you change MY mind?",
+    x: "Why a store_id column with RLS instead of a database per shop? When would I change MY mind?",
     cv: "Designed a multi-tenant commerce schema with PostgreSQL RLS; CI runs __ tests against a Postgres service on every pull request.",
   },
   {
@@ -97,12 +97,12 @@ const weeks = [
       [
         "Seed 10k products, read EXPLAIN, add indexes",
         3,
-        "Keep before/after query plans. Without volume you learn nothing.",
+        "Keep before/after query plans. Without volume I learn nothing.",
       ],
       [
         "Redis cache-aside for catalog reads",
         4,
-        "TTL plus explicit invalidation on product edits. Count hits and misses so you can show it working.",
+        "TTL plus explicit invalidation on product edits. Count hits and misses so I can show it working.",
       ],
       [
         "Open Graph share cards for products",
@@ -113,7 +113,7 @@ const weeks = [
       [
         "Keep applying + ADR on cache invalidation",
         2,
-        "Record what you cache, for how long, and what stale data costs.",
+        "Record what I cache, for how long, and what stale data costs.",
       ],
     ],
     x: "A merchant changes a price. How does the cached page become correct again, and what might a customer see meanwhile?",
@@ -159,15 +159,15 @@ const weeks = [
       [
         "First deploy: EC2 + Docker Compose + Nginx",
         6,
-        "One small instance running everything. Deploy by hand once so you feel every step; automate in Week 6.",
+        "One small instance running everything. Deploy by hand once so I feel every step; automate in Week 6.",
       ],
       [
         "Keep applying + write a debugging story",
         2,
-        "The overselling bug you prevented (or caused), as a short STAR story.",
+        "The overselling bug I prevented (or caused), as a short STAR story.",
       ],
     ],
-    x: "Two customers buy the last jersey at the same instant. What does MY database do, and how did you prove it?",
+    x: "Two customers buy the last jersey at the same instant. What does MY database do, and how did I prove it?",
     cv: "Built transactional checkout with idempotency keys; zero overselling across __ concurrent orders; deployed on AWS EC2 with Docker.",
   },
   {
@@ -350,7 +350,7 @@ const weeks = [
       [
         "Re-skin for a second shop type",
         4,
-        "Jersey store to eyewear. Any core-code change you needed is a bug to fix.",
+        "Jersey store to eyewear. Any core-code change I needed is a bug to fix.",
       ],
       [
         "Pilot with one real shop",
@@ -375,7 +375,7 @@ const weeks = [
       [
         "Update CV, portfolio, LinkedIn with real numbers + keep applying",
         3,
-        "Replace every __ with something you measured.",
+        "Replace every __ with something I measured.",
       ],
     ],
     x: "Pitch this to a shop owner in 60 seconds, then to an engineering manager in 60 seconds. What changes?",
@@ -407,7 +407,7 @@ const weeks = [
       [
         "Infrastructure as Code (Terraform or CDK)",
         6,
-        "Rebuild everything from code, destroy it, rebuild. Proof you can recover.",
+        "Rebuild everything from code, destroy it, rebuild. Proof I can recover.",
       ],
       [
         "Zero-downtime deploys (rolling or blue/green)",
@@ -422,7 +422,7 @@ const weeks = [
       [
         "Containers on ECS Fargate",
         6,
-        "Task definitions, services, autoscaling. Know what you gain over hand-managed EC2.",
+        "Task definitions, services, autoscaling. Know what I gain over hand-managed EC2.",
         1,
       ],
     ],
@@ -558,7 +558,7 @@ function renderWeeks() {
     const hrs = core(wi).reduce((n, [t]) => n + t[1], 0);
     const sib = weeks.filter((x) => x.ph === w.ph),
       wide = sib.length % 2 === 1 && sib[sib.length - 1] === w;
-    out += `<article class="week-card${w.later ? " later" : ""}${wide ? " wide" : ""}" data-week="${wi}"><div class="week-top"><div><div class="week-num">WEEK ${String(wi + 1).padStart(2, "0")}${wi === h ? '<span class="here">you are here</span>' : ""}</div><h3>${w.t}</h3></div><span class="pill ${w.c}">${w.tag}</span></div><p class="desc">${w.d}</p><div class="mini-track"><span></span></div><div class="task-list">${tasks}</div><details class="proof"><summary>Explain-back and CV line</summary><p><b>Be able to answer:</b> ${w.x}</p><p><b>CV line you're earning:</b> ${w.cv}</p></details><div class="week-footer"><span class="week-progress"></span><span>~${hrs} h core</span></div></article>`;
+    out += `<article class="week-card${w.later ? " later" : ""}${wide ? " wide" : ""}" data-week="${wi}"><div class="week-top"><div><div class="week-num">WEEK ${String(wi + 1).padStart(2, "0")}${wi === h ? '<span class="here">I are here</span>' : ""}</div><h3>${w.t}</h3></div><span class="pill ${w.c}">${w.tag}</span></div><p class="desc">${w.d}</p><div class="mini-track"><span></span></div><div class="task-list">${tasks}</div><details class="proof"><summary>Explain-back and CV line</summary><p><b>Be able to answer:</b> ${w.x}</p><p><b>CV line  I'm earning:</b> ${w.cv}</p></details><div class="week-footer"><span class="week-progress"></span><span>~${hrs} h core</span></div></article>`;
   });
   document.getElementById("weekGrid").innerHTML = out;
   updateProgress();
@@ -650,7 +650,7 @@ document.getElementById("importFile").onchange = async (e) => {
 document.getElementById("resetBtn").onclick = () => {
   if (
     confirm(
-      "Reset all completed tasks and notes on this browser? Export MY progress first if you want a backup.",
+      "Reset all completed tasks and notes on this browser? Export MY progress first if I want a backup.",
     )
   ) {
     state = { done: {}, notes: {} };
