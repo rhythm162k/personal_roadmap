@@ -1,536 +1,328 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#f7f5ef" />
-    <!-- Open Graph (Facebook, LinkedIn, WhatsApp, Messenger, Discord) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Build Mode" />
-    <meta property="og:title" content="Build Mode: My Engineering Roadmap" />
-    <meta
-      property="og:description"
-      content="An 8-week build-and-learn plan: a multi-tenant job and booking platform for repair and home-service businesses, with CI/CD, Redis and AWS."
-    />
-    <meta
-      property="og:url"
-      content="https://rhythm162k.github.io/personal_roadmap/"
-    />
-    <meta
-      property="og:image"
-      content="https://rhythm162k.github.io/personal_roadmap/roadmap.png"
-    />
-    <meta
-      property="og:image:alt"
-      content="Build Mode roadmap: Learn it. Build it. Ship it."
-    />
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f7f5ef" />
+  <meta property="og:site_name" content="Build Mode" />
+  <meta property="og:title" content="Build Mode: My 50-Day Engineering Roadmap" />
+  <meta property="og:description" content="A 50-day plan to build and pilot a service booking and job-management platform, then extend it with a safe RAG + MCP assistant." />
+  <meta name="description" content="My 50-day build-and-learn roadmap for a service booking and job-management platform, production engineering and an AI assistant." />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="icon" href="./roadmap.svg" type="image/svg+xml" />
+  <title>Build Mode — My 50-Day Engineering Roadmap</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script type="module" src="./script.js"></script>
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark">↗</div>BUILD MODE <span style="color:#90968b;font-size:11px;letter-spacing:.08em">/ MY ROADMAP</span></div>
+    <div class="top-actions">
+      <button class="btn" id="exportBtn">Export ↗</button>
+      <button class="btn" id="importBtn">Import</button>
+      <input type="file" id="importFile" accept="application/json" hidden />
+      <button class="btn dark" id="resetBtn">Reset</button>
+    </div>
+  </header>
 
-    <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Build Mode: My Engineering Roadmap" />
-    <meta
-      name="twitter:description"
-      content="An 8-week build-and-learn plan: a service-job platform for repair and home-service businesses."
-    />
-    <meta
-      name="twitter:image"
-      content="https://rhythm162k.github.io/personal_roadmap/roadmap.png"
-    />
-
-    <!-- Plain description for search engines -->
-    <meta
-      name="description"
-      content="An 8-week build-and-learn plan: a multi-tenant job and booking platform for repair and home-service businesses, with CI/CD, Redis and AWS."
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="icon" href="./roadmap.svg" type="image/png" />
-    <title>Build Mode — My Engineering Roadmap</title>
-    <link rel="stylesheet" href="./styles.css" />
-    <script type="module" src="script.js"></script>
-  </head>
-  <body>
-    <div class="app">
-      <header class="topbar">
-        <div class="brand">
-          <div class="brand-mark">↗</div>
-          BUILD MODE
-          <span style="color: #90968b; font-size: 11px; letter-spacing: 0.08em"
-            >/ MY ROADMAP</span
-          >
-        </div>
-        <div class="top-actions">
-          <button class="btn" id="exportBtn">Export ↗</button>
-          <button class="btn" id="importBtn">Import</button>
-          <input type="file" id="importFile" accept="application/json" hidden />
-          <button class="btn dark" id="resetBtn">Reset</button>
-        </div>
-      </header>
-
-      <section class="hero">
-        <div class="hero-main">
-          <div class="eyebrow">
-            8 weeks to launch · 2 weeks to scale · Full-stack → production
-            engineer
-          </div>
-          <h1>Learn it.<br />Build it.<br />Ship it.</h1>
-          <p>
-            One real product: a job and booking platform for repair and
-            home-service businesses that I can re-skin for any of them and sell,
-            in Bangladesh or abroad. Every skill I need to learn gets used
-            inside it.
-          </p>
-          <div class="hero-sticker">small steps. shipped work.</div>
-        </div>
-        <div class="hero-side">
-          <div>
-            <div class="eyebrow" style="color: #49613a">MY PROGRESS</div>
-            <h2>Consistency beats the perfect study day.</h2>
-            <p>
-              Tick off a task when I've done the work and can explain what I
-              built.
-            </p>
-          </div>
-          <div>
-            <div class="big-number" id="progressPercent">0%</div>
-            <div class="progress-track">
-              <div class="progress-fill" id="overallBar"></div>
-            </div>
-            <p style="margin-top: 9px" id="progressLabel">
-              0 of 60 tasks completed
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section class="stats">
-        <div class="stat">
-          <strong id="doneCount">0</strong><span>Core tasks done</span>
-        </div>
-        <div class="stat">
-          <strong id="remainingCount">60</strong><span>Core tasks left</span>
-        </div>
-        <div class="stat"><strong>8</strong><span>Weeks to launch</span></div>
-        <div class="stat">
-          <strong>~30h</strong><span>Per week, assumed</span>
-        </div>
-      </section>
-
-      <div class="callout">
-        <strong>Keep applying every week.</strong>Each week ends with a "Keep
-        applying" task on purpose: this project is evidence for MY applications,
-        not a reason to wait. The plan assumes about 30 focused hours a week;
-        with fewer, stretch the weeks but keep the order. Tasks marked
-        <em>bonus</em> are skippable and do not count toward progress. Weeks 5
-        and 6 are the likeliest to slip, and quotes are the first thing to
-        shrink.
+  <section class="hero">
+    <div class="hero-main">
+      <div class="eyebrow">50 days · functional MVP · real pilot · production-minded engineering</div>
+      <h1>Learn it.<br>Build it.<br>Ship it.</h1>
+      <p>I’m building a service booking and job-tracking platform for small repair and home-service businesses. The first release will solve one complete workflow, earn feedback from a real business, and become a credible portfolio project. A safe AI assistant comes after the core workflow works.</p>
+      <div class="hero-sticker">scope small. ship real.</div>
+    </div>
+    <div class="hero-side">
+      <div>
+        <div class="eyebrow" style="color:#49613a">MY PROGRESS</div>
+        <h2>Consistency beats the perfect study day.</h2>
+        <p>I tick a task only after I have built it and can explain the decision behind it.</p>
       </div>
-
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">My learning dashboard</div>
-          <h2>Choose a week. Make progress.</h2>
-        </div>
-        <p>Each checkbox saves automatically on this device.</p>
-      </div>
-      <nav class="tabs" id="tabs">
-        <button class="active" data-tab="roadmap">Roadmap</button
-        ><button data-tab="project">The product</button
-        ><button data-tab="customer">Find a customer</button
-        ><button data-tab="cloud">AWS &amp; scale</button
-        ><button data-tab="mindset">Build, don't vibe</button
-        ><button data-tab="resources">Watch &amp; read</button>
-      </nav>
-
-      <section class="panel active" id="roadmap">
-        <div class="week-grid" id="weekGrid"></div>
-      </section>
-
-      <section class="panel" id="project">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">What I'm building</div>
-            <h2>One job platform, many service businesses</h2>
-          </div>
-        </div>
-        <div class="two-col">
-          <article class="info-card">
-            <h3>The idea</h3>
-            <p>
-              A customer asks for a service, the owner quotes and schedules it,
-              a technician does the job from their phone, and the customer
-              tracks progress and payment. One codebase; each business is a
-              config: branding, service types, currency, time zone, language.
-            </p>
-            <div class="stack">
-              <span class="chip">React + TypeScript</span
-              ><span class="chip">Node + Express</span
-              ><span class="chip">PostgreSQL + RLS</span
-              ><span class="chip">Drizzle</span
-              ><span class="chip">Redis + BullMQ</span
-              ><span class="chip">Docker</span><span class="chip">AWS</span>
-            </div>
-          </article>
-          <article class="info-card">
-            <h3>Why this one</h3>
-            <p>
-              It reuses Kin CRM's multi-tenancy and permissions, and adds what a
-              CRUD app lacks: scheduling, workflow, file uploads, reminders and
-              a customer-facing side. Repair and home-service businesses are
-              easy to find and easy to explain the product to.
-            </p>
-          </article>
-        </div>
-        <div class="info-card" style="margin-top: 14px">
-          <h3>What changes per business type</h3>
-          <div class="tbl-wrap">
-            <table class="tbl">
-              <tr>
-                <th>Business</th>
-                <th>Service fields</th>
-                <th>Special flows</th>
-              </tr>
-              <tr>
-                <td>AC repair</td>
-                <td>Unit type, brand, issue, address</td>
-                <td>Site visit, parts quote, warranty</td>
-              </tr>
-              <tr>
-                <td>Appliance repair</td>
-                <td>Appliance, model, fault</td>
-                <td>Pick-up or on-site, parts ordering</td>
-              </tr>
-              <tr>
-                <td>Cleaning</td>
-                <td>Property size, rooms, frequency</td>
-                <td>Recurring jobs, flat-rate pricing</td>
-              </tr>
-              <tr>
-                <td>All of them</td>
-                <td colspan="2">
-                  Request, quote, schedule, technician updates, invoice, payment
-                  record, reminders
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="two-col" style="margin-top: 14px">
-          <article class="info-card">
-            <h3>Sellable v1</h3>
-            <ul>
-              <li>
-                Customer submits a request with photos, no account needed.
-              </li>
-              <li>
-                Owner reviews, quotes, schedules and assigns a technician.
-              </li>
-              <li>No double-booking, enforced in the database.</li>
-              <li>Technician updates jobs from a mobile web page.</li>
-              <li>Customer tracks status, quote and payment.</li>
-              <li>Invoices and manual payment records (cash, bKash, bank).</li>
-              <li>Email reminders as background jobs.</li>
-              <li>English and Bangla, any currency and time zone.</li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <h3>Decisions to explain in interviews</h3>
-            <ul>
-              <li>Modular monolith, not microservices.</li>
-              <li>business_id on every tenant table, enforced by RLS.</li>
-              <li>Server computes totals; money stored as integers.</li>
-              <li>Exclusion constraint prevents overlapping jobs.</li>
-              <li>Request state machine with an event log.</li>
-              <li>Notifications and payments behind provider interfaces.</li>
-              <li>Write each choice down as a short ADR.</li>
-            </ul>
-          </article>
-        </div>
-        <div class="callout" style="background: var(--orange)">
-          <strong>Check my assumptions in Week 1</strong>I'm assuming small
-          repair and cleaning businesses take requests by phone and WhatsApp and
-          track jobs in a notebook. Field-service tools like Jobber and
-          Housecall Pro already exist abroad, so my edge is price, Bangla, local
-          payments and setup done for the owner. Two real conversations beat my
-          guess.
-        </div>
-        <div class="callout">
-          <strong>Not in v1</strong>Native mobile apps, AI, GPS tracking, live
-          payment gateways, route optimisation, microservices. They cost weeks
-          and aren't needed to prove the product. AI comes after launch.
-        </div>
-      </section>
-
-      <section class="panel" id="customer">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Real client work</div>
-            <h2>Find the first customer while I build</h2>
-          </div>
-        </div>
-        <div class="two-col">
-          <article class="info-card">
-            <h3>Go direct first</h3>
-            <ul>
-              <li>
-                Start with AC repair, appliance repair, cleaning and maintenance
-                businesses near me.
-              </li>
-              <li>Show a working demo on my phone, not a slide deck.</li>
-              <li>
-                Offer a cheap or free pilot in exchange for weekly feedback, a
-                testimonial and permission to name them on my CV.
-              </li>
-              <li>Get the scope in writing: what's included, for how long.</li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <h3>Marketplaces second</h3>
-            <ul>
-              <li>
-                Search Upwork, Freelancer and PeoplePerHour for booking systems,
-                customer portals and admin dashboards.
-              </li>
-              <li>Read the listings to learn what clients ask for.</li>
-              <li>
-                Expect heavy competition on plain booking sites; a live demo of
-                a service-management portal stands out more.
-              </li>
-              <li>LinkedIn is for reaching owners and founders directly.</li>
-            </ul>
-          </article>
-        </div>
-        <div class="callout" style="background: var(--pink)">
-          <strong>Cut line</strong>If Week 4 ends and the technician view isn't
-          done, shrink Week 5 (simple line-item quotes, no PDF invoices). Don't
-          stretch the schedule.
-        </div>
-        <div class="callout">
-          <strong>Pilot data</strong>Use demo data until hosting, backups and
-          privacy are settled. Don't put a real business's customers on credits
-          that expire.
-        </div>
-      </section>
-
-      <section class="panel" id="cloud">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Free tier, honestly</div>
-            <h2>AWS &amp; a SPOF-proof path</h2>
-          </div>
-        </div>
-        <div class="callout" style="background: var(--orange)">
-          <strong>The free plan is shorter than most tutorials say.</strong>New
-          accounts get up to $200 in credits, but the free plan ends after 6
-          months or when credits run out, whichever comes first, and the account
-          then closes unless I upgrade. Guides promising "12 months free"
-          describe the old system. Open my account in Week 4, not earlier, and
-          read my own end date on the Credits page in Billing.
-        </div>
-        <div class="two-col">
-          <article class="info-card">
-            <h3>Cost rules</h3>
-            <ul>
-              <li>
-                Budget alert and MFA before anything else; never use root day to
-                day.
-              </li>
-              <li>
-                Load balancers and NAT gateways bill by the hour. Run labs for a
-                day, then delete.
-              </li>
-              <li>
-                Some services are restricted on the free plan; check each one on
-                the Free Tier page.
-              </li>
-              <li>
-                Run Redis in a container on my instance. Managed Redis costs
-                money.
-              </li>
-              <li>
-                Don't host a paying client on credits that expire. Price hosting
-                into the offer.
-              </li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <h3>Custom domain, end to end</h3>
-            <ul>
-              <li>
-                Buy or borrow a domain (the registration is the only unavoidable
-                cost).
-              </li>
-              <li>
-                Point nameservers to Cloudflare (free DNS) or Route 53 (small
-                monthly fee).
-              </li>
-              <li>Request a free ACM certificate.</li>
-              <li>Add DNS records for the app and CloudFront.</li>
-              <li>Force HTTPS and test with curl and browser devtools.</li>
-            </ul>
-          </article>
-        </div>
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Deploy ladder</div>
-            <h2>Climb it as money allows</h2>
-          </div>
-        </div>
-        <article class="info-card">
-          <div class="phase">
-            <strong>Level 0 · Week 4: one instance, Docker Compose</strong>
-            <p>
-              Cheapest, and everything is a single point of failure. Fine for
-              learning and a pilot.
-            </p>
-          </div>
-          <div class="phase">
-            <strong>Level 1 · Week 7: managed pieces</strong>
-            <p>
-              RDS with backups and a tested restore, S3 + CloudFront, ACM HTTPS,
-              CD with OIDC, alarms.
-            </p>
-          </div>
-          <div class="phase">
-            <strong>Level 2 · Later labs: no single AZ or instance</strong>
-            <p>
-              Load balancer, two instances in two AZs, RDS Multi-AZ, then ECS
-              Fargate. Short, torn-down labs.
-            </p>
-          </div>
-          <div class="phase">
-            <strong>Level 3 · when a customer pays</strong>
-            <p>
-              Autoscaling, read replica, WAF, Terraform, blue/green deploys, a
-              written disaster-recovery runbook with real RTO and RPO.
-            </p>
-          </div>
-        </article>
-      </section>
-
-      <section class="panel" id="mindset">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">AI-era engineer</div>
-            <h2>Build, don't vibe</h2>
-          </div>
-        </div>
-        <div class="two-col">
-          <article class="info-card">
-            <h3>Six rules</h3>
-            <ul>
-              <li>
-                <b>Design first, prompt second.</b> Schema, API contracts and
-                state machines are mine; AI drafts around them.
-              </li>
-              <li>
-                <b>Explain-back before ticking.</b> Answer each week's question
-                out loud. If I stall, I don't own it yet.
-              </li>
-              <li>
-                <b>Read every diff.</b> Small PRs even solo; never merge what I
-                can't explain.
-              </li>
-              <li>
-                <b>No feature merges without its test.</b> I write the cases; AI
-                helps type them. Break the code on purpose to watch them fail.
-              </li>
-              <li>
-                <b>Write ADRs.</b> One paragraph per decision in docs/decisions.
-                They become my interview stories.
-              </li>
-              <li>
-                <b>Keep a confusion log.</b> Each Friday, turn the top three
-                into videos to watch.
-              </li>
-            </ul>
-          </article>
-          <article class="info-card">
-            <h3>Skill map</h3>
-            <p>
-              <b>Already solid:</b> TypeScript, React, Node/Express, PostgreSQL,
-              Drizzle, RLS, JWT and OAuth, Zod, Vitest and Supertest, Docker for
-              dev, multi-tenancy from Kin CRM.
-            </p>
-            <p>
-              <b>New here:</b> CI/CD, Redis, queues, scheduling and time zones,
-              AWS core (IAM, EC2, S3, RDS, CloudFront, ACM), observability,
-              security testing, k6, Playwright.
-            </p>
-            <p>
-              <b>After launch:</b> Terraform, multi-AZ design, Fargate, payment
-              gateways, RAG and MCP.
-            </p>
-          </article>
-        </div>
-        <div class="info-card" style="margin-top: 14px">
-          <h3>Weekly job-search rhythm</h3>
-          <ul>
-            <li>
-              Apply to suitable remote junior and intern roles; tailor only when
-              the role warrants it.
-            </li>
-            <li>Track company, role, date, link and follow-up date.</li>
-            <li>
-              Each week, practise one project decision and one debugging story
-              out loud.
-            </li>
-            <li>
-              Learning milestones support applications; they are never
-              prerequisites for applying.
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <section class="panel" id="resources">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Videos first</div>
-            <h2>Watch, then build</h2>
-          </div>
-          <p>
-            These open YouTube searches. Filter by this year and pick the one
-            that builds something.
-          </p>
-        </div>
-        <div class="resource-list" id="vidList"></div>
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Reference</div>
-            <h2>Official docs</h2>
-          </div>
-        </div>
-        <div class="resource-list" id="docList"></div>
-        <p style="font-size: 11px; color: var(--muted); margin-top: 13px">
-          Check current pricing and eligibility before using any paid cloud or
-          AI service.
-        </p>
-      </section>
-
-      <div class="footer-note">
-        Made for steady progress, not burnout. Progress is saved in this
-        browser; use Export to back it up.
+      <div>
+        <div class="big-number" id="progressPercent">0%</div>
+        <div class="progress-track"><div class="progress-fill" id="overallBar"></div></div>
+        <p style="margin-top:9px" id="progressLabel">0 of 37 tasks completed</p>
       </div>
     </div>
+  </section>
 
-    <div class="modal-backdrop" id="noteModal">
-      <div class="modal">
-        <h3>Session notes</h3>
-        <p id="noteTaskTitle">
-          Add a short note about what I learned or shipped.
-        </p>
-        <textarea
-          id="noteText"
-          placeholder="What did I build? What confused me? What will I try next?"
-        ></textarea>
-        <div class="modal-actions">
-          <button class="btn" id="closeNote">Close</button
-          ><button class="btn dark" id="saveNote">Save note</button>
+  <section class="stats">
+    <div class="stat"><strong id="doneCount">0</strong><span>Core tasks done</span></div>
+    <div class="stat"><strong id="remainingCount">37</strong><span>Core tasks left</span></div>
+    <div class="stat"><strong>50</strong><span>Days available</span></div>
+    <div class="stat"><strong>1–2h</strong><span>Per day</span></div>
+  </section>
+
+  <div class="callout">
+    <strong>My 50-day constraint</strong>
+    This is a functional first release, not a complete SaaS. I’m targeting roughly 1–2 focused hours a day. The core workflow takes priority over polish, extra integrations and AI. I keep applying for jobs throughout the build; no learning milestone is a prerequisite for applying.
+  </div>
+
+  <div class="section-head">
+    <div><div class="eyebrow">My learning dashboard</div><h2>Choose a week. Make progress.</h2></div>
+    <p>Each checkbox and session note saves automatically on this device.</p>
+  </div>
+  <nav class="tabs" id="tabs">
+    <button class="active" data-tab="roadmap">50-day plan</button>
+    <button data-tab="product">The product</button>
+    <button data-tab="assistant">AI assistant</button>
+    <button data-tab="customer">Find a pilot</button>
+    <button data-tab="engineering">Engineering skills</button>
+    <button data-tab="resources">Resources</button>
+  </nav>
+
+  <section class="panel active" id="roadmap">
+    <p class="panel-intro">Each task is designed for about 1–2 hours. A week represents five focused build days plus room for review, applications and unexpected debugging. The final day is reserved for a complete demo and next-step decision.</p>
+    <div class="week-grid" id="weekGrid"></div>
+    <div class="callout" style="background:var(--orange)">
+      <strong>My scope rule</strong>
+      If the schedule slips, I cut PDF invoices, advanced reports, cache optimisation and visual polish first. I do not cut tenant isolation, secure access, database-enforced scheduling, a tested core workflow or a usable pilot.
+    </div>
+  </section>
+
+  <section class="panel" id="product">
+    <div class="section-head"><div><div class="eyebrow">What I’m building</div><h2>A service request → completed job workflow</h2></div></div>
+    <p class="panel-intro">The first target is a small AC repair, appliance repair or home-maintenance business. The product is a configurable web app, not a general-purpose CRM or a full field-service suite.</p>
+    <div class="two-col">
+      <article class="info-card">
+        <h3>The customer journey</h3>
+        <div class="step-list">
+          <div class="step-item">I publish the business’s services, service area and contact details.</div>
+          <div class="step-item">A customer submits a request, describes the issue and optionally uploads photos.</div>
+          <div class="step-item">The owner reviews the request, creates a simple quote, chooses a time and assigns a technician.</div>
+          <div class="step-item">The technician sees assigned jobs on a phone and updates progress.</div>
+          <div class="step-item">The customer follows a secure status link and sees the approved quote and payment status.</div>
+          <div class="step-item">The business records a cash, bank-transfer or mobile-financial-service payment.</div>
         </div>
+      </article>
+      <article class="info-card">
+        <h3>Sellable first release</h3>
+        <ul>
+          <li>Public service list and service request form.</li>
+          <li>Business dashboard for requests, customers, jobs and assignments.</li>
+          <li>Technician-friendly mobile job view.</li>
+          <li>Scheduling with database-level double-booking prevention.</li>
+          <li>Simple quote and manual payment records.</li>
+          <li>Customer tracking with a secure, expiring link or authenticated access.</li>
+          <li>Email notifications for key status changes.</li>
+          <li>One configurable business first; a second business type as a re-skin test.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="two-col" style="margin-top:14px">
+      <article class="info-card">
+        <h3>My initial stack</h3>
+        <p>I’ll reuse the stack already demonstrated in Kin CRM and My Movie Diary, rather than spending the 50 days learning a new framework.</p>
+        <div class="stack">
+          <span class="chip">React + TypeScript</span><span class="chip">Node.js + Express</span><span class="chip">PostgreSQL</span><span class="chip">Drizzle ORM</span><span class="chip">Zod</span><span class="chip">Vitest + Supertest</span><span class="chip">Docker</span><span class="chip">GitHub Actions</span>
+        </div>
+      </article>
+      <article class="info-card">
+        <h3>Architecture decisions to defend</h3>
+        <ul>
+          <li>Modular monolith first; no premature microservices.</li>
+          <li>Every tenant-owned record carries a business boundary; enforce it in database policies and server authorization.</li>
+          <li>Job status changes follow an explicit state machine and create an audit event.</li>
+          <li>PostgreSQL prevents overlapping technician bookings, not just the calendar UI.</li>
+          <li>Money is stored as integer minor units; totals are calculated on the server.</li>
+          <li>Notifications run asynchronously and are safe to retry.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="callout" style="background:var(--pink)">
+      <strong>Not part of the 50-day MVP</strong>
+      Native mobile apps, GPS tracking, route optimisation, automatic dispatch, recurring subscriptions, real payment-gateway settlement, self-serve SaaS onboarding and multi-region infrastructure. I can add these only after a pilot proves the need.
+    </div>
+  </section>
+
+  <section class="panel" id="assistant">
+    <div class="section-head"><div><div class="eyebrow">AI feature blueprint</div><h2>A service assistant that helps customers take the next step</h2></div></div>
+    <p class="panel-intro">The chatbot is not a generic ChatGPT window. It should reduce repetitive questions, help customers describe a problem, and turn a conversation into a structured service request. I’ll add it after the core request-to-job workflow is reliable.</p>
+    <div class="two-col">
+      <article class="info-card">
+        <h3>Where it helps in this product</h3>
+        <ul>
+          <li>Answer business-specific questions: services, opening hours, service areas, pricing rules, preparation and warranty policies.</li>
+          <li>Ask guided questions about the issue and suggest the right service category.</li>
+          <li>Check whether the business serves an address or area.</li>
+          <li>Check available appointment windows without promising a booking.</li>
+          <li>Prepare a service-request draft from the conversation for customer confirmation.</li>
+          <li>Hand off unclear, urgent or sensitive cases to a human.</li>
+          <li>Later, authenticated customers can ask for the status of their own request.</li>
+        </ul>
+      </article>
+      <article class="info-card">
+        <h3>What RAG and MCP each do</h3>
+        <p><b>RAG = trusted business knowledge.</b> I retrieve relevant chunks from service descriptions, FAQs, coverage areas, opening hours, policies and preparation guides. The model answers from those sources and says when the information is missing.</p>
+        <p><b>MCP = controlled actions and live data.</b> I expose a small set of typed tools, such as listing services, checking service coverage, finding available slots, creating a request draft and retrieving an authenticated customer’s request status.</p>
+        <p><b>They work together.</b> RAG explains the business’s rules; MCP reads current system data or performs an explicitly permitted action.</p>
+      </article>
+    </div>
+    <div class="info-card" style="margin-top:14px">
+      <h3>Architecture I intend to build</h3>
+      <div class="step-list">
+        <div class="step-item"><b>Chat widget</b> sends messages to my own backend endpoint. No model API key or MCP credential is exposed in the browser.</div>
+        <div class="step-item"><b>Chat orchestration service</b> applies rate limits, identifies the business from trusted server-side context, calls the model provider and keeps a short conversation history. My backend acts as the MCP host/client: it passes approved tool schemas to the model, validates a proposed tool call and then invokes the MCP server. The model never connects to the database or MCP server directly.</div>
+        <div class="step-item"><b>RAG retrieval</b> embeds the question, searches business-scoped knowledge chunks in PostgreSQL + pgvector and returns source snippets.</div>
+        <div class="step-item"><b>MCP tool server</b> exposes only allowlisted, typed tools. Each tool calls existing application services; it never accepts arbitrary SQL or trusts a business_id supplied by the model.</div>
+        <div class="step-item"><b>Existing application services</b> enforce tenant access, customer identity, validation, availability and audit logging exactly as they do for normal API requests.</div>
+        <div class="step-item"><b>Confirmation and handoff</b> show the proposed request or appointment details before submission; consequential actions require customer confirmation or owner approval.</div>
       </div>
     </div>
-  </body>
+    <div class="two-col" style="margin-top:14px">
+      <article class="info-card">
+        <h3>First chatbot slice</h3>
+        <ol>
+          <li>Store business FAQs and service information as versioned knowledge documents.</li>
+          <li>Chunk, embed and store them with <code>business_id</code> metadata in pgvector.</li>
+          <li>Retrieve only chunks belonging to the active business.</li>
+          <li>Answer FAQs with source-grounded responses and a clear fallback.</li>
+          <li>Expose read-only MCP tools: list services, check service area and inspect available slots.</li>
+          <li>Add a create-request-draft tool, then require a clear confirmation before submission.</li>
+        </ol>
+      </article>
+      <article class="info-card">
+        <h3>Safety and evaluation I won’t skip</h3>
+        <ul>
+          <li>Never let the model invent a quote, availability or policy.</li>
+          <li>Never let it access arbitrary database queries or another business’s records.</li>
+          <li>Derive tenant and customer identity from trusted backend authentication, not chat text.</li>
+          <li>Require confirmation before creating a request or booking.</li>
+          <li>Treat uploaded documents and retrieved text as untrusted input; test prompt injection.</li>
+          <li>Build a small evaluation set: correct FAQ answers, missing-answer cases, tool selection, tenant isolation and refusal/handoff cases.</li>
+          <li>Log tool calls and outcomes without unnecessarily retaining sensitive conversation data.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="callout" style="background:var(--orange)">
+      <strong>Scope decision</strong>
+      I will not make the chatbot a launch blocker. The first useful version is FAQ retrieval plus guided service triage. Live availability and request creation through MCP come next, once the underlying scheduling and request APIs are tested. Authenticated request tracking is a later addition.
+    </div>
+    <div class="section-head"><div><div class="eyebrow">Learning order</div><h2>RAG first, tools second, evaluation throughout</h2></div></div>
+    <div class="phase"><strong>1 · LLM application basics</strong><p>Model/API calls, structured outputs, token and latency costs, prompt design, provider adapter, server-side secrets and rate limits.</p></div>
+    <div class="phase"><strong>2 · RAG foundations</strong><p>Document ingestion, chunking, embeddings, vector similarity, metadata filters, retrieval quality, citations and update/delete handling.</p></div>
+    <div class="phase"><strong>3 · MCP and tool calling</strong><p>Resources vs tools, JSON schemas, TypeScript MCP SDK, tool validation, authorization, timeouts, retries and confirmation boundaries.</p></div>
+    <div class="phase"><strong>4 · Production quality</strong><p>Evaluation dataset, prompt-injection tests, cross-tenant tests, tracing, cost/latency monitoring, fallback and human handoff.</p></div>
+  </section>
+
+  <section class="panel" id="customer">
+    <div class="section-head"><div><div class="eyebrow">Real client work</div><h2>Find a pilot while I build</h2></div></div>
+    <div class="two-col">
+      <article class="info-card">
+        <h3>Customer discovery</h3>
+        <ul>
+          <li>Speak with at least two AC repair, appliance repair or maintenance business owners.</li>
+          <li>Ask how requests arrive, how jobs are assigned, how schedules change and how payments are recorded.</li>
+          <li>Ask to see the current process; do not pitch features before understanding the workflow.</li>
+          <li>Write down the three most expensive or frustrating problems.</li>
+          <li>Confirm whether a web dashboard and mobile technician page would fit the real operation.</li>
+        </ul>
+      </article>
+      <article class="info-card">
+        <h3>Pilot approach</h3>
+        <ul>
+          <li>Show a working flow on a phone and laptop, not only screenshots.</li>
+          <li>Offer a tightly scoped, low-cost pilot if useful, with clear duration and support boundaries.</li>
+          <li>Use synthetic data until hosting, access, backups and privacy are ready.</li>
+          <li>Get written permission before using a business name, logo, customer data or testimonial.</li>
+          <li>Measure onboarding time, requests processed and issues fixed; never invent CV metrics.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="callout" style="background:var(--pink)">
+      <strong>If no business agrees to a pilot by the final week</strong>
+      I will still finish a realistic demo with seeded data, ask two owners to review it, record their feedback and keep outreach active. A pilot is a goal, not a guaranteed outcome.
+    </div>
+    <div class="info-card">
+      <h3>Where I’ll look</h3>
+      <ul>
+        <li>Direct outreach to local repair, cleaning and maintenance businesses.</li>
+        <li>Upwork, Freelancer and PeoplePerHour listings to learn recurring client requirements.</li>
+        <li>LinkedIn to reach owners, operators and founders.</li>
+        <li>My own network for a first design partner and warm introduction.</li>
+      </ul>
+      <p class="small-note">A demo and a real conversation are more useful than assuming that every business needs the same workflow.</p>
+    </div>
+  </section>
+
+  <section class="panel" id="engineering">
+    <div class="section-head"><div><div class="eyebrow">Engineering depth</div><h2>Skills I’m deliberately practising</h2></div></div>
+    <div class="two-col">
+      <article class="info-card">
+        <h3>Already demonstrated in my projects</h3>
+        <p>React, TypeScript, Node/Express, PostgreSQL, Drizzle, Zod, authentication, OAuth, multi-tenancy/RLS, audit logging, Vitest, Supertest and Docker-based development.</p>
+        <p class="small-note">Kin CRM and My Movie Diary already demonstrate substantial full-stack work. This project should add new engineering evidence, not repeat the same CRUD patterns.</p>
+      </article>
+      <article class="info-card">
+        <h3>New or deeper skills in this build</h3>
+        <ul>
+          <li>GitHub Actions CI and deployment workflows.</li>
+          <li>Postgres range types, exclusion constraints, transactions and query plans.</li>
+          <li>Redis-backed queues, retries, delayed jobs and idempotency.</li>
+          <li>Playwright E2E testing and k6 smoke/load testing.</li>
+          <li>Structured logs, request IDs, health checks and error monitoring.</li>
+          <li>OWASP API security, secure uploads and tenant-boundary testing.</li>
+          <li>AWS IAM, EC2, S3, CloudFront, backups and cost controls.</li>
+          <li>RAG, embeddings, pgvector, MCP tools and AI evaluations.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="two-col" style="margin-top:14px">
+      <article class="info-card">
+        <h3>AWS without surprise bills</h3>
+        <ul>
+          <li>I verify current account eligibility, pricing and credit expiry before creating resources.</li>
+          <li>I enable MFA and billing alerts first, use least-privilege IAM and avoid daily root use.</li>
+          <li>I practise a small EC2 + Docker deployment, then S3 object storage and HTTPS delivery if the budget permits.</li>
+          <li>I tear down billable lab resources after each exercise and verify that they are actually deleted.</li>
+          <li>I use a managed platform for the pilot if AWS costs or operational risk are not justified.</li>
+        </ul>
+      </article>
+      <article class="info-card">
+        <h3>Redis and performance without cargo culting</h3>
+        <ul>
+          <li>I use Redis first where it solves a real queue/rate-limit need.</li>
+          <li>I measure dashboard queries with <code>EXPLAIN ANALYZE</code> and realistic seed data.</li>
+          <li>I add cache-aside only after identifying a repeated expensive read.</li>
+          <li>I define TTL and invalidation rules, then test stale-data behaviour.</li>
+          <li>I record before/after latency rather than claiming an unmeasured speed-up.</li>
+        </ul>
+      </article>
+    </div>
+    <div class="callout">
+      <strong>My engineering habits</strong>
+      I design the schema and API contracts before asking AI to draft code. I read every diff, write tests for the behaviour, break the code to see tests fail, keep short architecture decision records, and explain each important trade-off in my own words. AI helps with research, implementation drafts and test ideas; it does not replace understanding.
+    </div>
+    <div class="info-card">
+      <h3>Job-search rhythm stays active</h3>
+      <ul>
+        <li>I keep applying to suitable junior, fresher and internship roles during all 50 days.</li>
+        <li>I tailor applications when the role warrants it and track follow-ups.</li>
+        <li>Each week I practise one architecture decision and one debugging story aloud.</li>
+        <li>I update my CV with measured results, deployed links and genuine pilot feedback only.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="panel" id="resources">
+    <div class="section-head"><div><div class="eyebrow">Videos first</div><h2>Watch, then build</h2></div><p>These open focused YouTube searches; I choose recent, hands-on walkthroughs.</p></div>
+    <div class="resource-list" id="vidList"></div>
+    <div class="section-head"><div><div class="eyebrow">Reference</div><h2>Official documentation</h2></div></div>
+    <div class="resource-list" id="docList"></div>
+    <p class="small-note" style="margin-top:13px">I check current pricing, SDK versions and service availability before using a cloud or AI service. A free tier is not assumed to mean permanently free.</p>
+  </section>
+
+  <div class="footer-note">Made for steady progress, not burnout. Progress is saved in this browser; Export creates a backup that can be imported on another device.</div>
+</div>
+
+<div class="modal-backdrop" id="noteModal">
+  <div class="modal">
+    <h3>Session notes</h3>
+    <p id="noteTaskTitle">A short note about what I learned or shipped.</p>
+    <textarea id="noteText" placeholder="What did I build? What confused me? What will I try next?"></textarea>
+    <div class="modal-actions"><button class="btn" id="closeNote">Close</button><button class="btn dark" id="saveNote">Save note</button></div>
+  </div>
+</div>
+</body>
 </html>
