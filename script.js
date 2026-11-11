@@ -1,3 +1,10 @@
+const phases = [
+  { title: "Phase 1 · Foundation and validation", description: "Understand the real business workflow, define the smallest useful release, design the data model and establish the development environment.", start: 0, end: 0 },
+  { title: "Phase 2 · Build the core product", description: "Build the complete service workflow: public requests, owner operations, technician scheduling, customer tracking, quotes and notifications.", start: 1, end: 4 },
+  { title: "Phase 3 · Production readiness", description: "Test the critical journey, secure the application, add observability and deploy a reliable pilot environment.", start: 5, end: 5 },
+  { title: "Phase 4 · Pilot, launch and sell", description: "Put the product in front of a real business, collect feedback, fix the highest-impact issues and turn the result into a credible portfolio and client offer.", start: 6, end: 6 }
+];
+
 const weeks = [
   {
     t: "Validate the workflow and set the foundation", tag: "Plan + setup", c: "green",
@@ -132,13 +139,19 @@ function escapeHtml(s) {
 function renderWeeks() {
   const firstIncomplete = weeks.findIndex((w, wi) => w.tasks.some((_, ti) => !isDone(wi, ti)));
   let out = "";
-  weeks.forEach((w, wi) => {
-    const tasks = w.tasks.map((t, ti) => {
-      const id = taskId(wi, ti), d = isDone(wi, ti);
-      return `<div><label class="task ${d ? "done" : ""}"><input type="checkbox" data-id="${id}" ${d ? "checked" : ""}><span class="task-copy"><span class="task-title">${escapeHtml(t[0])}</span><span class="task-meta">◷ ${t[1]}h · ${escapeHtml(t[2])}</span></span></label>${state.notes[id] ? `<div class="task-note">✎ ${escapeHtml(state.notes[id])}</div>` : ""}<button class="btn" style="margin:0 0 3px 29px;padding:4px 9px;font-size:10px" data-note="${id}">${state.notes[id] ? "Edit session note" : "+ Add session note"}</button></div>`;
-    }).join("");
-    const hrs = w.tasks.reduce((n, t) => n + t[1], 0);
-    out += `<article class="week-card" data-week="${wi}"><div class="week-top"><div><div class="week-num">WEEK ${String(wi + 1).padStart(2, "0")}${wi === firstIncomplete ? '<span class="here">CURRENT FOCUS</span>' : ""}</div><h3>${escapeHtml(w.t)}</h3></div><span class="pill ${w.c}">${escapeHtml(w.tag)}</span></div><p class="desc">${escapeHtml(w.d)}</p><div class="mini-track"><span></span></div><div class="task-list">${tasks}</div><details class="proof"><summary>Explain-back and CV line</summary><p><b>Be able to answer:</b> ${escapeHtml(w.x)}</p><p><b>CV line I’m working towards:</b> ${escapeHtml(w.cv)}</p></details><div class="week-footer"><span class="week-progress"></span><span>~${hrs}h total</span></div></article>`;
+  phases.forEach((phase, pi) => {
+    out += `<div class="phase-head"><div class="phase-kicker">PHASE ${pi + 1}</div><h3>${escapeHtml(phase.title.replace(/^Phase \d+ · /, ""))}</h3><p>${escapeHtml(phase.description)}</p></div>`;
+    const phaseWeekCount = phase.end - phase.start + 1;
+    for (let wi = phase.start; wi <= phase.end; wi++) {
+      const w = weeks[wi];
+      const isLastOddWeek = phaseWeekCount % 2 === 1 && wi === phase.end;
+      const tasks = w.tasks.map((t, ti) => {
+        const id = taskId(wi, ti), d = isDone(wi, ti);
+        return `<div><label class="task ${d ? "done" : ""}"><input type="checkbox" data-id="${id}" ${d ? "checked" : ""}><span class="task-copy"><span class="task-title">${escapeHtml(t[0])}</span><span class="task-meta">◷ ${t[1]}h · ${escapeHtml(t[2])}</span></span></label>${state.notes[id] ? `<div class="task-note">✎ ${escapeHtml(state.notes[id])}</div>` : ""}<button class="btn" style="margin:0 0 3px 29px;padding:4px 9px;font-size:10px" data-note="${id}">${state.notes[id] ? "Edit session note" : "+ Add session note"}</button></div>`;
+      }).join("");
+      const hrs = w.tasks.reduce((n, t) => n + t[1], 0);
+      out += `<article class="week-card${isLastOddWeek ? " wide" : ""}" data-week="${wi}"><div class="week-top"><div><div class="week-num">WEEK ${String(wi + 1).padStart(2, "0")}${wi === firstIncomplete ? '<span class="here">CURRENT FOCUS</span>' : ""}</div><h3>${escapeHtml(w.t)}</h3></div><span class="pill ${w.c}">${escapeHtml(w.tag)}</span></div><p class="desc">${escapeHtml(w.d)}</p><div class="mini-track"><span></span></div><div class="task-list">${tasks}</div><details class="proof"><summary>Explain-back and CV line</summary><p><b>Be able to answer:</b> ${escapeHtml(w.x)}</p><p><b>CV line I’m working towards:</b> ${escapeHtml(w.cv)}</p></details><div class="week-footer"><span class="week-progress"></span><span>~${hrs}h total</span></div></article>`;
+    }
   });
   document.getElementById("weekGrid").innerHTML = out;
   updateProgress();

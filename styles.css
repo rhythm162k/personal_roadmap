@@ -791,3 +791,32 @@ summary:focus-visible {
 @media (max-width: 760px) {
   .wide { grid-column: auto; }
 }
+
+
+/* Phase-based roadmap grouping */
+.phase-head {
+  grid-column: 1 / -1;
+  margin: 18px 0 0;
+  border-radius: 18px;
+  background: var(--lilac);
+  padding: 15px 19px;
+}
+.phase-head h3 {
+  margin: 3px 0 2px;
+  font-size: 17px;
+  letter-spacing: -0.03em;
+}
+.phase-head p {
+  margin: 3px 0 0;
+  max-width: 850px;
+  color: #4d4866;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.phase-kicker {
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  color: #68617e;
+}
+.hero-main p { display: none; }
